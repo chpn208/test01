@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="spring">
+    <CLASSES>
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-aop-4.1.7.RELEASE.jar!/" />
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-beans-4.1.7.RELEASE.jar!/" />
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-context-4.1.7.RELEASE.jar!/" />
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-core-4.1.7.RELEASE.jar!/" />
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-expression-4.1.7.RELEASE.jar!/" />
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-jdbc-4.1.7.RELEASE.jar!/" />
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-web-4.1.7.RELEASE.jar!/" />
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-webmvc-4.1.7.RELEASE.jar!/" />
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-tx-4.1.7.RELEASE.jar!/" />
+      <root url="jar://E:/file/lib/spring-framework-4.1.7.RELEASE/libs/spring-aspects-4.1.7.RELEASE.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:cache="http://www.springframework.org/schema/cache"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:bean="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <import resource="jdbc-application.xml"/>
+    <context:component-scan base-package="com.oooo"/>
+
+    <bean id="testAopService" class="com.oooo.service.TestAopService">
+        <property name="id" value="1"/>
+    </bean>
+
+    <bean id="logAop" class="com.oooo.aop.LogAop">
+    </bean>
+
+
+  <aop:config>
+      <aop:aspect ref="logAop">
+         <aop:pointcut id="service" expression="execution(* com.oooo.service.TestAopService.*(..))"/>
+
+      </aop:aspect>
+      
+   <!-- <aop:aspect ref="logAop">
+        <aop:pointcut id="service" expression="execution(* com.oooo.service.TestAopService.*(..))"/>
+        
+        <aop:before pointcut-ref="service" method="before" />
+        <aop:after pointcut-ref="service" method="after"/>
+    </aop:aspect>-->
+  </aop:config>
+
+
+</beans>
