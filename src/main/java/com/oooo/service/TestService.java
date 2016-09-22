@@ -15,5 +15,6 @@ public class TestService {
     public void testService(){
         User user = dao.getById(1);
         System.out.println(user.getName());
+        System.out.println("aaaa");
     }
 }

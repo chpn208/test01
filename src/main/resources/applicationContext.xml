@@ -2,19 +2,28 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:cache="http://www.springframework.org/schema/cache"
-       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:bean="http://www.springframework.org/schema/cache"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/aop
-       http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+       http://www.springframework.org/schema/aop/spring-aop.xsd
 
+
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
     <import resource="jdbc-application.xml"/>
-    <context:component-scan base-package="com.oooo"/>
+    <context:annotation-config/>
 
-    <bean id="testAopService" class="com.oooo.service.TestAopService">
+    <context:component-scan base-package="com.oooo"  use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
+
+    <mvc:annotation-driven/>
+
+   <bean id="testAopService" class="com.oooo.service.TestAopService">
         <property name="id" value="1"/>
     </bean>
 
@@ -24,16 +33,17 @@
 
   <aop:config>
       <aop:aspect ref="logAop">
-         <aop:pointcut id="service" expression="execution(* com.oooo.service.TestAopService.*(..))"/>
+         <aop:pointcut id="service" expression="execution(* com.oooo.service.*.*(..))"/>
 
       </aop:aspect>
-      
-   <!-- <aop:aspect ref="logAop">
-        <aop:pointcut id="service" expression="execution(* com.oooo.service.TestAopService.*(..))"/>
-        
-        <aop:before pointcut-ref="service" method="before" />
-        <aop:after pointcut-ref="service" method="after"/>
-    </aop:aspect>-->
+
+      <aop:aspect ref="logAop">
+          <aop:pointcut id="service" expression="execution(* com.oooo.service.*.*(..))"/>
+
+          <!--<aop:before pointcut-ref="service" method="before"/>
+          <aop:after pointcut-ref="service" method="after"/>-->
+          <aop:around pointcut-ref="service" method="after"/>
+      </aop:aspect>
   </aop:config>
 
 
