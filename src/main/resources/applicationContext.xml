@@ -27,11 +27,11 @@
         <property name="id" value="1"/>
     </bean>
 
-    <bean id="logAop" class="com.oooo.aop.LogAop">
-    </bean>
+   <!-- <bean id="logAop" class="com.oooo.aop.LogAop">
+    </bean>-->
 
 
-  <aop:config>
+<!--  <aop:config>
       <aop:aspect ref="logAop">
          <aop:pointcut id="service" expression="execution(* com.oooo.service.*.*(..))"/>
 
@@ -40,11 +40,11 @@
       <aop:aspect ref="logAop">
           <aop:pointcut id="service" expression="execution(* com.oooo.service.*.*(..))"/>
 
-          <!--<aop:before pointcut-ref="service" method="before"/>
-          <aop:after pointcut-ref="service" method="after"/>-->
+          &lt;!&ndash;<aop:before pointcut-ref="service" method="before"/>
+          <aop:after pointcut-ref="service" method="after"/>&ndash;&gt;
           <aop:around pointcut-ref="service" method="after"/>
       </aop:aspect>
-  </aop:config>
+  </aop:config>-->
 
 
 </beans>

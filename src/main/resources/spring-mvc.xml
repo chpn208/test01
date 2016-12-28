@@ -25,6 +25,35 @@
 
 
     <mvc:annotation-driven/>
+<!--
+    &lt;!&ndash; 支持 Shiro对Controller的方法级AOP安全控制  begin&ndash;&gt;
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true" />
+    </bean>
 
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    &lt;!&ndash; Shiro's main business-tier object for web-enabled applications &ndash;&gt;
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="shiroDbRealm" />
+        <property name="cacheManager" ref="shiroEhcacheManager" />
+    </bean>
+
+    &lt;!&ndash; 用户授权信息Cache, 采用EhCache &ndash;&gt;
+    <bean id="shiroEhcacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>
+    </bean>
+
+    &lt;!&ndash; 項目自定义的Realm &ndash;&gt;
+    <bean id="shiroDbRealm" class="com.oooo.service.ShiroDbRealm">
+        <property name="userService" ref="userService"/>
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authorizationCacheName" value="authorizationCache"/>
+    </bean>
+
+    &lt;!&ndash; 保证实现了Shiro内部lifecycle函数的bean执行 &ndash;&gt;
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>-->
 
 </beans>

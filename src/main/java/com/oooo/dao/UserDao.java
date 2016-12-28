@@ -8,4 +8,5 @@ import com.oooo.model.User;
 public interface UserDao {
     User getById(int id);
     void update(User user);
+    User getByName(String name);
 }

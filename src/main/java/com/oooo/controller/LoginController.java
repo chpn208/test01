@@ -23,12 +23,18 @@ public class LoginController {
     MenuService menuService;
     @Autowired
     UserService userService;
+    @RequestMapping("/login")
     public String login(HttpServletRequest request,Model model){
         HttpSession session = request.getSession();
         //Integer userId = session.getAttribute("userId");
         User user = userService.findById(1);
-        List<Menu> menus = menuService.getMenusByUser(user);
-        model.addAttribute("menu",menus);
-        return "index";
+        if (user != null){
+            session.setAttribute("username",user.getName());
+            List<Menu> menus = menuService.getMenusByUser(user);
+            model.addAttribute("menu",menus);
+            return "/index";
+        }else {
+            return "/login";
+        }
     }
 }

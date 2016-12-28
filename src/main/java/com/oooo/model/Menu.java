@@ -1,5 +1,6 @@
 package com.oooo.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,7 +13,7 @@ public class Menu {
     private int level;
     private int menuLevel;
     private int parentId;
-    private List<Menu> children;
+    private List<Menu> children = new ArrayList<>();
 
     public int getId() {
         return id;

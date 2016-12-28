@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oooo.dao.MenuDao">
+    <resultMap id="BaseResultMap" type="com.oooo.model.Menu">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="menu_level" property="menuLevel" jdbcType="INTEGER"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="getMenusByLevel" parameterType="int" resultMap="BaseResultMap">
+        select
+          m.id,m.name,m.url,m.level,m.menu_level,m.parent_id
+        FROM menu m
+        WHERE
+        <![CDATA[
+        m.level <= #{level}
+        ]]>
+    </select>
+</mapper>
