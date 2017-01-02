@@ -29,6 +29,11 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         List<String> strArray = Lists.newArrayList();
+        String requestUri = ((HttpServletRequest) request).getRequestURI();
+        if (requestUri.endsWith(".js") || requestUri.endsWith(".css") ||requestUri.endsWith(".ico")){
+
+            return;
+        }
         if (StringUtils.isNotEmpty(passUrl)){
             String[] passUrls = passUrl.split(";");
             strArray = Arrays.asList(passUrls);

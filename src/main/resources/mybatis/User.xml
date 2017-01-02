@@ -8,6 +8,14 @@
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="level" property="level" jdbcType="INTEGER"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="parent_user" property="parentUser" jdbcType="INTEGER"/>
+        <result column="wechart" property="wechart" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="INTEGER"/>
+        <result column="province" property="province" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="county" property="county" jdbcType="VARCHAR"/>
+        <result column="detailed_address" property="detailedAddress" jdbcType="VARCHAR"/>
+        <result column="key_code" property="keyCode" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="getById" parameterType="int" resultType="com.oooo.model.User">
@@ -16,6 +24,20 @@
     <select id="getByName" parameterType="String" resultType="com.oooo.model.User">
         SELECT * FROM user u where u.name= #{name}
     </select>
+    <select id="getMembers" resultMap="BaseResultMap">
+        SELECT * FROM user u where
+         <![CDATA[
+        u.level < 99
+        ]]>
+    </select>
+    <select id="getByKey" parameterType="String" resultType="com.oooo.model.User">
+        SELECT * FROM user u where u.key = #{key}
+    </select>
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="com.oooo.model.User">
+        INSERT INTO user
+        (name,password,level,status,parent_user,wechart,mobile,province,city,county,detailed_address,key_code) VALUES
+        (#{name},#{password},#{level},#{status},#{parentUser},#{wechart},#{mobile},#{province},#{city},#{county},#{detailedAddress},#{keyCode})
+    </insert>
     <update id="update" parameterType="com.oooo.model.User">
         UPDATE user u SET u.name = #{name},u.password=#{password}
     </update>

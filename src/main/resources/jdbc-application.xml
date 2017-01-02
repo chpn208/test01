@@ -44,7 +44,15 @@
         <property name="basePackage" value="com.oooo.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
+    <bean id="jdbcTemplatelib" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource">
+            <ref bean="dataSource" />
+        </property>
+    </bean>
+    <bean id="serialUtil" class="com.oooo.util.SerialUtil">
+        <property name="jdbcTemplate" ref="jdbcTemplatelib" />
 
+    </bean>
 
    <!-- <ctx:config>
         <ctx:advisor advice-ref=""

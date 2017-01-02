@@ -9,6 +9,14 @@ public class User {
     private String password;
     private int level;
     private int status;
+    private int parentUser;
+    private String wechart;
+    private long mobile;
+    private String province;
+    private String city;
+    private String county;
+    private String detailedAddress;
+    private String keyCode;
 
     public int getId() {
         return id;
@@ -48,5 +56,69 @@ public class User {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public int getParentUser() {
+        return parentUser;
+    }
+
+    public void setParentUser(int parentUser) {
+        this.parentUser = parentUser;
+    }
+
+    public String getWechart() {
+        return wechart;
+    }
+
+    public void setWechart(String wechart) {
+        this.wechart = wechart;
+    }
+
+    public long getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(long mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public String getDetailedAddress() {
+        return detailedAddress;
+    }
+
+    public void setDetailedAddress(String detailedAddress) {
+        this.detailedAddress = detailedAddress;
+    }
+
+    public String getKeyCode() {
+        return keyCode;
+    }
+
+    public void setKeyCode(String keyCode) {
+        this.keyCode = keyCode;
     }
 }

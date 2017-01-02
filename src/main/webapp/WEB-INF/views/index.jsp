@@ -1,79 +1,78 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2016/9/18
-  Time: 9:52
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <html>
 <head>
     <title>index</title>
 </head>
-<%--<link rel="stylesheet" type="text/css" href="../../css/easy_ui/easyui.css">
-<link rel="stylesheet" type="text/css" href="../../css/easy_ui/icon.css">--%>
 
-<%--<script type="text/javascript" src="../../js/easy_ui/jquery.min.js"></script>
-<script type="text/javascript" src="../../js/easy_ui/jquery.easyui.min.js"></script>--%>
-
+<link rel="stylesheet" type="text/css" href="../../css/tableform.css"/>
 <link rel="stylesheet" type="text/css" href="../../easyui/themes/default/easyui.css"/>
 <link rel="stylesheet" type="text/css" href="../../easyui/themes/icon.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/ace.min.css"/>
 <script type="text/javascript" src="../../easyui/jquery.min.js"></script>
 <script type="text/javascript" src="../../easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../../js/menu.js"></script>
 <body>
 <div class="easyui-layout" style="width: 100%; height: 100%;">
-    <div data-options="region:'north'" style="height: 80px"></div>
-    <div data-options="region:'south'" style="height: 80px;"></div>
-
     <div data-options="region:'west'" style="width: 200px;" title="menu">
-        <div style="margin:0px 0;"></div>
-        <div class="easyui-panel" style="padding:5px;height: 100px" >
-            <ul class="easyui-tree">
-                <li>
-                    <span>代理商</span>
-                    <ul>
-                        <li >
-                            <ul>代理商操作</ul>
-                        </li>
-                        <li >
-                            <ul>fafafas</ul>
-                        </li>
-                    </ul>
+        <%--<div style="margin:0px 0;"></div>--%>
+        <%-- <div class="easyui-panel" style="padding:5px;height: 100px" >--%>
+        <%-- <ul class="easyui-tree" style="height: 100px;">
+             <li>
 
-                    <%-- <ul>
-                         <li data-options="state:'closed'">
-                             <span>Photos</span>
+                &lt;%&ndash; <c:forEach items="${menus}" var="item">
+                     <c:choose>
+                         <c:when test="${item.menuLevel == 1}">
+                             <span>${item.name}</span>
                              <ul>
-                                 <li>
-                                     <span>Friend</span>
-                                 </li>
-                                 <li>
-                                     <span>Wife</span>
-                                 </li>
-                                 <li>
-                                     <span>Company</span>
-                                 </li>
-                             </ul>
-                         </li>
-                         <li>
-                             <span>Program Files</span>
-                             <ul>
-                                 <li>Intel</li>
-                                 <li>Java</li>
-                                 <li>Microsoft Office</li>
-                                 <li>Games</li>
-                             </ul>
-                         </li>
-                         <li>index.html</li>
-                         <li>about.html</li>
-                         <li>welcome.html</li>
-                     </ul>--%>
-                </li>
+                                 <c:forEach items="${item.children}" var="item">
+                                       <li>
+                                           <ul onclick="addTab('${item.name}','${item.url}')">${item.name}</ul>
+                                         </li>
+                                 </c:forEach>
 
-            </ul>
+                             </ul>
+                         </c:when>
+
+                     </c:choose>
+                 </c:forEach>&ndash;%&gt;
+
+             </li>
+
+         </ul>--%>
+        <div class="easyui-accordion" style="width:auto;height:300px;">
+            <c:forEach items="${menus}" var="item">
+                <c:if test="${item.menuLevel == 1}">
+                    <div title="${item.name}" data-options="iconCls:'icon-ok'" style="overflow:auto;padding:10px;">
+                        <ul class="nav nav-list user-menu pull-left dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                           <c:forEach items="${item.children}" var="item">
+                               <li class="hover">
+                               <a href="javascript:addTab('${item.name}','${item.url}')">${item.name}</a>
+                               </li>
+
+                           </c:forEach>
+                        </ul>
+                    </div>
+                </c:if>
+            </c:forEach>
+        </div>
+
+
+        <%--  </div>--%>
+    </div>
+    <div data-options="region:'north'" style="height: 40px;background:#438eb9">
+        <div class="title">
+        逗趣运营管理系统
         </div>
     </div>
-    <div data-options="region:'center'"/>
+
+    <div data-options="region:'south'" style="height: 80px;"></div>
+    <div data-options="region:'center'">
+        <div id="tt" class="easyui-tabs" style="width: 1125px; height: auto;"></div>
+    </div>
 </div>
 </body>
 </html>
