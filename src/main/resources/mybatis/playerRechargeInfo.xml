@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oooo.dao.PlayerRechargeInfoDao">
+    <resultMap id="BaseResultMap" type="com.oooo.model.PlayerRechargeInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="player_id" property="playerId" jdbcType="INTEGER"/>
+        <result column="agent_id" property="agentId" jdbcType="INTEGER"/>
+        <result column="recharge_num" property="rechargeNum" jdbcType="INTEGER"/>
+        <result column="send_num" property="sendNum" jdbcType="INTEGER"/>
+        <result column="recharge_time" property="rechargeNum" jdbcType="DATE"/>
+    </resultMap>
+
+
+    <select id="getAll" resultMap="BaseResultMap">
+        SELECT * FROM player_recharge_info
+
+    </select>
+    <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="com.oooo.model.PlayerRechargeInfo">
+        INSERT INTO player_recharge_info
+        (player_id,agent_id,recharge_num,send_num,recharge_time) VALUES
+        (#{playerId},#{agentId},#{rechargeNum}, #{sendNum}, #{rechargeTime})
+    </insert>
+    <select id="getById" parameterType="int" resultMap="BaseResultMap">
+        SELECT * FROM player_recharge_info where id=#{id}
+    </select>
+
+    <select id="getByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT * FROM player_recharge_info p WHERE 0=0
+        <if test="playerId != null">
+            p.plyer_id = #{playerId}
+        </if>
+        <if test="startNum != null and endNum != null">
+            limit #{startNum},#{endNum}
+        </if>
+    </select>
+    <select id="getCount" parameterType="java.util.Map" resultType="int">
+        SELECT * FROM player_recharge_info p where 0 = 0
+        <if test="playerId != null">
+            p.player_id=#{playerId}
+        </if>
+    </select>
+
+ <!--   <select id="getAll" resultMap="BaseResult">
+        select * FROM player_recharge_info
+
+    </select>-->
+</mapper>

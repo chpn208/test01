@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,38 +37,49 @@ public class RegisterController {
     }
 
     @RequestMapping("/agentAdd.do")
-    public String saveAgent(HttpServletRequest request){
-        Map<String, Object> params = ServletUtils.getRequestParameters(request);
-        String randCode = (String) params.get("randCodeImage");
+    public String saveAgent(HttpServletRequest request,
+                    @RequestParam(value = "randCode") String randCode,
+                    @RequestParam(value = "upAgent",defaultValue = "0") String upAgent,
+                    @RequestParam(value = "titleName") String titleName,
+                    @RequestParam(value = "password") String password,
+                    @RequestParam(value = "mobilePhone") String mobile,
+                    @RequestParam(value = "weixinCode") String wxCode,
+                    @RequestParam(value = "s_province") String province,
+                    @RequestParam(value = "s_city") String city,
+                    @RequestParam(value = "s_county") String region,
+                    @RequestParam(value = "address") String address
+                            ){
+        //Map<String, Object> params = ServletUtils.getRequestParameters(request);
+        //String randCode = (String) params.get("randCodeImage");
         HttpSession session = request.getSession();
         String validateCode = (String) session.getAttribute("validation_code");
         if (!validateCode.toUpperCase().equals(randCode.toUpperCase())){
             return "";
         }
-        String upAgent = (String) params.get("upAgent");
-        String titleName = (String) params.get("titleName");
+        //String upAgent = (String) params.get("upAgent");
+       /* String titleName = (String) params.get("titleName");
         if (StringUtils.isEmpty(titleName)){
             return "";
-        }
+        }*/
 
-        String password = (String) params.get("password");
+        /*String password = (String) params.get("password");
         if (StringUtils.isEmpty(password)){
             return "";
-        }
-        String mobile = (String) params.get("mobilePhone");
+        }*/
+       /* String mobile = (String) params.get("mobilePhone");
         if (StringUtils.isEmpty(mobile)){
             return "";
-        }
+        }*/
 
-        String wxCode = (String) params.get("weixinCode");
+        /*String wxCode = (String) params.get("weixinCode");
         if (StringUtils.isEmpty(wxCode)){
             return "";
-        }
-        String province = (String) params.get("provinceCode");
+        }*/
+        //String province = (String) params.get("provinceCode");
 
-        String city = (String) params.get("cityCode");
-        String region = (String) params.get("regionCode");
-        String address = (String) params.get("address");
+        //String city = (String) params.get("cityCode");
+        //String region = (String) params.get("regionCode");
+        //String address = (String) params.get("address");
 
         User user = new User();
         user.setName(titleName);

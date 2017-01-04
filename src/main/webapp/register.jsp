@@ -39,7 +39,7 @@
                     </td>
                     <td class="value">
                         <input class="inputxt" id="titleName" name="titleName" placeholder="请输入您的真实姓名" errormsg="请输入1-5个中文字符" value="" datatype="zh,s1-5" onblur="checkInput(this)">
-                        <span id="validate_titleName" class="validate_titleName Validform_wrong"></span>
+                        <span id="validate_titleName" class="validate_titleName Validform_wrong Validform_label"></span>
                     </td>
                 </tr>
                 <tr>
@@ -85,7 +85,7 @@
                     </td>
                     <td class="value">
                        <input type="hidden" class="combo-value" value="--请选择--"></span>
-                        <input id="cityCode" name="cityCode" type="hidden" datatype="n4-4" errormsg="请选择地市">
+                       <%-- <input id="cityCode" name="cityCode" type="hidden" datatype="n4-4" errormsg="请选择地市">--%>
                         <select id="s_city" name="s_city" ></select>
                         <%--<span class="Validform_checktip"></span>--%>
                     </td>
@@ -98,7 +98,7 @@
                     </td>
                     <td class="value">
                       <input type="hidden" class="combo-value" value="--请选择--"></span>
-                        <input id="regionCode" name="regionCode" type="hidden" datatype="n6-6" errormsg="请选择区县">
+                        <%--<input id="regionCode" name="regionCode" type="hidden" datatype="n6-6" errormsg="请选择区县">--%>
                         <select id="s_county" name="s_county"></select>
                         <%--<span class="Validform_checktip"></span>--%>
                     </td>
@@ -110,7 +110,7 @@
                         </label>
                     </td>
                     <td class="value">
-                        <input class="inputxt" id="address" name="address" ignore="ignore" value="" datatype="s2-32">
+                       < <input class="inputxt" id="address" name="address" ignore="ignore" value="" datatype="s2-32">
                         <span class="Validform_checktip"></span>
                     </td>
                 </tr>
@@ -169,7 +169,7 @@
 </script>
 <script type="text/javascript">
     $(function () {
-        $("#formobj").Validform({
+       /* $("#formobj").Validform({
             tiptype: 4,
             btnSubmit: "#btn_sub",
             btnReset: "#btn_reset",
@@ -190,7 +190,7 @@
             callback: function (data) {
                 null(data);
             }
-        });
+        });*/
 
     });
     /**
@@ -217,7 +217,7 @@
          return false;
          }
          */
-        var upAgent = $("#upAgent").val();
+       /* var upAgent = $("#upAgent").val();
         var titleName = $("#titleName").val();
         var weixinCode = $("#weixinCode").val();
         var mobilePhone = $("#mobilePhone").val();
@@ -243,7 +243,8 @@
 //        $("#formobj").Validform({ajaxPost:false}); //初始化参数，设置非ajax提交方式，页面跳转
         //$("#formobj").attr("action", encodeURI(encodeURI(actionURL)));
         //$('form').submit();
-        window.location.href=encodeURI(encodeURI(actionURL))
+        window.location.href=encodeURI(encodeURI(actionURL))*/
+       $('#formobj').submit();
     }
 </script>
 

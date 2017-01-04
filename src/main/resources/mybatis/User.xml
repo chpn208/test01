@@ -30,6 +30,30 @@
         u.level < 99
         ]]>
     </select>
+
+    <select id="getCount" parameterType="java.util.Map" resultType="java.lang.Long">
+        SELECT count(*) FROM user u
+        <![CDATA[
+           WHERE u.level < 99
+         ]]>
+        <if test="userlevel != 99">
+            AND  u.parentUser = #{userId}
+        </if>
+    </select>
+
+    <select id="getPageMembers" parameterType="java.util.Map" resultMap="BaseResultMap" resultType="com.oooo.model.User">
+        SELECT * FROM user u
+        <![CDATA[
+         WHERE u.level < 99;
+         ]]>
+        <if test="userlevel != 99">
+         AND  u.parentUser = #{id}
+        </if>
+
+        <if test="startNum!= 0 and endNum != 0">
+            limit #{startNum},#{endNum}
+        </if>
+    </select>
     <select id="getByKey" parameterType="String" resultType="com.oooo.model.User">
         SELECT * FROM user u where u.key = #{key}
     </select>

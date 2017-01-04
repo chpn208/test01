@@ -65,7 +65,7 @@
     </div>
     <div data-options="region:'north'" style="height: 40px;background:#438eb9">
         <div class="title">
-        逗趣运营管理系统
+      <%--  逗趣运营管理系统--%>
         </div>
     </div>
 
