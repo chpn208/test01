@@ -55,28 +55,50 @@ function checkInput(obj) {
                 $("#validate_repassword").html("重复密码与密码不相同")
             }
 
-        }else
-        if (a=="randCode"){
+        }else if (a=="randCode"){
+            var dataCode = $("#randCode").val();
             $.ajax({
-                // url:"/checkCode?validateCode="+obj.value,
-                url:"/checkCode",
-                data:{"validateCode":obj.value},
-                success:function (obj) {
-                    if (obj != 200){
+                url: "/checkCode?validateCode="+dataCode,
+                success: function (obj) {
+                    if (obj != 200) {
                         $("#validate_randCode").html("请输入正确的验证码")
-                    }else {
+                    } else {
                         $("#validate_randCode").html("")
                     }
                 },
-                error:function (obj) {
+                error: function (obj) {
                     $("#validate_randCode").html("请输入正确的验证码")
                 }
             })
+           /* if (checkRandomCode(a)){
+                $("#validate_"+a).html("")
+            }else {
+                $("#validate_randCode").html("请填写正确的验证码")
+            }*/
         }else {
             $("#validate_"+a).html("")
         }
     }
 
+}
+function checkRandomCode(obj) {
+    var dataCode = $("#randCode").val();
+    $.ajax({
+        url: "/checkCode?validateCode="+dataCode,
+        success: function (obj) {
+            if (obj != 200) {
+                //$("#validate_randCode").html("请输入正确的验证码")
+                return false;
+            } else {
+                //$("#validate_randCode").html("")
+                return true;
+            }
+        },
+        error: function (obj) {
+            // $("#validate_randCode").html("请输入正确的验证码")
+            return false;
+        }
+    })
 }
 /*
 (function($, win, undef) {

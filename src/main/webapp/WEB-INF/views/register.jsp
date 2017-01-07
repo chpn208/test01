@@ -110,7 +110,7 @@
                         </label>
                     </td>
                     <td class="value">
-                       < <input class="inputxt" id="address" name="address" ignore="ignore" value="" datatype="s2-32">
+                        <input class="inputxt" id="address" name="address" ignore="ignore" value="" datatype="s2-32">
                         <span class="Validform_checktip"></span>
                     </td>
                 </tr>
@@ -203,6 +203,7 @@
     }
 
     function docLocation(){
+        debugger
         /*
          var provCode = $('#provSelect').combobox('getValue');
          var provName = $("#provSelect").combobox('getText');
@@ -217,7 +218,7 @@
          return false;
          }
          */
-       /* var upAgent = $("#upAgent").val();
+        var upAgent = $("#upAgent").val();
         var titleName = $("#titleName").val();
         var weixinCode = $("#weixinCode").val();
         var mobilePhone = $("#mobilePhone").val();
@@ -228,7 +229,64 @@
         var password = $("#password").val();
         var randCodeImage = $("#randCode").val();
 
-        var actionURL = "/agentAdd.do?"
+        if ("" == titleName){
+            alert("请输入用户名");
+            return;
+        }
+        if ("" == weixinCode){
+            alert("请输入微信号");
+            return
+        }
+        if ("" == mobilePhone){
+            alert("请输入手机号");
+            return;
+        }
+        if ("" == provinceCode){
+            alert("请输入省份")
+            return
+        }
+        if ("" == cityCode){
+            alert("请输入城市");
+            return
+        }
+        if ("" == regionCode){
+            alert("请输入县区");
+            return;
+        }
+        if ("" == password){
+            alert("请输入密码");
+            return;
+        }
+        if ("" == repassword){
+            alert("请重新输入密码")
+            return
+        }
+        if ("" == randCodeImage){
+            alert("请输入验证码")
+            return
+        }/*else {
+             var dataCode = $("#randCode").val();
+            $.ajax({
+                url: "/checkCode?validateCode=" + dataCode,
+                success: function (obj) {
+                    if (obj != 200) {
+                        $("#validate_randCode").html("请输入正确的验证码")
+                        return ;
+                    } else {
+                        //$("#validate_randCode").html("")
+                        //return ;
+                    }
+                },
+                error: function (obj) {
+                     $("#validate_randCode").html("请输入正确的验证码")
+                    return ;
+                }
+            })
+        }*/
+
+
+
+        /*var actionURL = "/agentAdd.do?"
                 +"&upAgent="+upAgent
                 +"&titleName="+titleName
                 +"&weixinCode="+weixinCode
@@ -244,7 +302,18 @@
         //$("#formobj").attr("action", encodeURI(encodeURI(actionURL)));
         //$('form').submit();
         window.location.href=encodeURI(encodeURI(actionURL))*/
-       $('#formobj').submit();
+        $.ajax({
+            url:    "/agentAdd.do",
+            data:   $('form').serialize(),
+            type: 'post',
+            success:function (obj) {
+                if (obj.code == 200){
+                    window.location.href = "/home/login?userName="+obj.msg;
+                }else {
+                    alert(obj.info);
+                }
+            }
+        })
     }
 </script>
 

@@ -8,7 +8,7 @@
         <result column="agent_id" property="agentId" jdbcType="INTEGER"/>
         <result column="recharge_num" property="rechargeNum" jdbcType="INTEGER"/>
         <result column="send_num" property="sendNum" jdbcType="INTEGER"/>
-        <result column="recharge_time" property="rechargeNum" jdbcType="DATE"/>
+        <result column="recharge_time" property="rechargeTime" jdbcType="DATE"/>
     </resultMap>
 
 
@@ -28,21 +28,17 @@
     <select id="getByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
         SELECT * FROM player_recharge_info p WHERE 0=0
         <if test="playerId != null">
-            p.plyer_id = #{playerId}
+            AND p.player_id = #{playerId}
         </if>
         <if test="startNum != null and endNum != null">
             limit #{startNum},#{endNum}
         </if>
     </select>
     <select id="getCount" parameterType="java.util.Map" resultType="int">
-        SELECT * FROM player_recharge_info p where 0 = 0
+        SELECT COUNT(*) FROM player_recharge_info p where 0 = 0
         <if test="playerId != null">
-            p.player_id=#{playerId}
+            AND p.player_id=#{playerId}
         </if>
     </select>
 
- <!--   <select id="getAll" resultMap="BaseResult">
-        select * FROM player_recharge_info
-
-    </select>-->
 </mapper>

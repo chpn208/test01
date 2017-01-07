@@ -28,4 +28,8 @@ public class PlayerRechargeInfoService {
     public List<PlayerRechargeInfo> getAll(){
         return playerRechargeInfoDao.getAll();
     }
+
+    public int getCount(Map<String ,Integer> parameterMap){
+        return playerRechargeInfoDao.getCount(parameterMap);
+    }
 }

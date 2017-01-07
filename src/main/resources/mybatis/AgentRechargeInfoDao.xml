@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oooo.dao.AgentRechargeInfoDao">
+    <resultMap id="BaseResultMap" type="com.oooo.model.AgentRechargeInfo">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="recharge_num" property="rechargeNum" jdbcType="INTEGER"/>
+        <result column="send_num" property="sendNum" jdbcType="INTEGER"/>
+        <result column="recharge_id" property="rechargeId" jdbcType="INTEGER"/>
+        <result column="time" property="time" jdbcType="TIME"/>
+    </resultMap>
+
+    <insert id="add" useGeneratedKeys="true" keyColumn="id" parameterType="com.oooo.model.AgentRechargeInfo">
+        INSERT INTO agent_recharge_info
+        (user_id,recharge_num,send_num,recharge_id,time) VALUES
+        (#{userId},#{rechargeNum},#{sendNum},#{rechargeId},#{time})
+    </insert>
+    <select id="getByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT * FROM agent_recharge_info ari WHERE 0=0
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
+        <if test="rechargeId != null">
+            AND recharge_id = #{rechargeId}
+        </if>
+        <if test="startNum != null and endNum != null">
+            limit #{startNum},#{endNum}
+        </if>
+    </select>
+    <select id="count" parameterType="java.util.Map" resultType="int">
+        SELECT count(*) FROM agent_recharge_info ari WHERE 0=0
+        <if test="userId != null">
+            AND user_id = #{userId}
+        </if>
+        <if test="recharge_id != null">
+            AND recharge_id = #{rechargeId}
+        </if>
+    </select>
+</mapper>

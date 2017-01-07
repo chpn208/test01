@@ -1,6 +1,6 @@
 package com.oooo.util;
 
-import com.google.inject.internal.Maps;
+import com.google.common.collect.Maps;
 import com.oooo.model.Permissions;
 import com.oooo.model.RechargeSend;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +22,7 @@ public class Constant {
         return constant;
     }
 
+    public final String USER_ID="userName";
 
     private Constant(){
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -29,6 +30,8 @@ public class Constant {
     }
     private Map<Integer,RechargeSend> rechargeSendMap = Maps.newHashMap();
     private Map<String,Permissions> permissionsMap = Maps.newHashMap();
+
+    private Map<Integer,Integer> rechargeMap = Maps.newHashMap();
 
     public Map<Integer, RechargeSend> getRechargeSendMap() {
         return rechargeSendMap;
@@ -86,5 +89,17 @@ public class Constant {
             rechargeSend.setReturnNum(returnNum);
             rechargeSendMap.put(rechargeSend.getLevel(), rechargeSend);
         }
+    }
+    public void initRechargeMap(){
+        rechargeMap.put(1,50);
+        rechargeMap.put(2,100);
+        rechargeMap.put(3,200);
+    }
+    public Map<Integer,Integer> getRechargeMap(){
+        return rechargeMap;
+    }
+
+    public SerialUtil getSerialUtil(){
+        return serialUtil;
     }
 }

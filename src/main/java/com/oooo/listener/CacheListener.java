@@ -18,6 +18,7 @@ public class CacheListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         Constant.getInstance().initPermissionMap();
         Constant.getInstance().initRechargeSendMap();
+        Constant.getInstance().initRechargeMap();
     }
 
     @Override
