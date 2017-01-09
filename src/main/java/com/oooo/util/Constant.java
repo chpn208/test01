@@ -1,6 +1,7 @@
 package com.oooo.util;
 
 import com.google.common.collect.Maps;
+import com.oooo.model.Notice;
 import com.oooo.model.Permissions;
 import com.oooo.model.RechargeSend;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +33,7 @@ public class Constant {
     private Map<String,Permissions> permissionsMap = Maps.newHashMap();
 
     private Map<Integer,Integer> rechargeMap = Maps.newHashMap();
+    private Map<Integer,Notice> noticeMap = Maps.newHashMap();
 
     public Map<Integer, RechargeSend> getRechargeSendMap() {
         return rechargeSendMap;
@@ -43,6 +45,10 @@ public class Constant {
 
     public Map<String, Permissions> getPermissionsMap() {
         return permissionsMap;
+    }
+
+    public Map<Integer,Notice> getNoticeMap(){
+        return noticeMap;
     }
 
     public void setPermissionsMap(Map<String, Permissions> permissionsMap) {
@@ -94,6 +100,21 @@ public class Constant {
         rechargeMap.put(1,50);
         rechargeMap.put(2,100);
         rechargeMap.put(3,200);
+    }
+    public void initNoticeType(){
+        List<Map<String, Object>> result = serialUtil.getBySQL("select * from notice");
+        for (Map<String, Object> stringObjectMap : result) {
+            Integer type = (Integer) stringObjectMap.get("type");
+            String name= (String) stringObjectMap.get("name");
+            String content = (String) stringObjectMap.get("content");
+
+            Notice notice = new Notice();
+            notice.setType(type);
+            notice.setName(name);
+            notice.setContent(content);
+
+            noticeMap.put(notice.getType(),notice);
+        }
     }
     public Map<Integer,Integer> getRechargeMap(){
         return rechargeMap;

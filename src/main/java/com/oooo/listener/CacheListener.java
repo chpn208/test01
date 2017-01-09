@@ -1,15 +1,12 @@
-package com.oooo.listener; /**
+/**
  * Created by chenpan on 16-12-31.
  */
+package com.oooo.listener;
 
 import com.oooo.util.Constant;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionBindingEvent;
 
 public class CacheListener implements ServletContextListener {
 
@@ -19,6 +16,7 @@ public class CacheListener implements ServletContextListener {
         Constant.getInstance().initPermissionMap();
         Constant.getInstance().initRechargeSendMap();
         Constant.getInstance().initRechargeMap();
+        Constant.getInstance().initNoticeType();
     }
 
     @Override

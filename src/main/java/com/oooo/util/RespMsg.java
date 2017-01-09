@@ -5,7 +5,9 @@ package com.oooo.util;
  */
 public class RespMsg<T>{
     private int code;
-    private T msg;
+    private String msg;
+
+    private T result;
 
     public int getCode() {
         return code;
@@ -15,11 +17,19 @@ public class RespMsg<T>{
         this.code = code;
     }
 
-    public T getMsg() {
+    public String getMsg() {
         return msg;
     }
 
-    public void setMsg(T msg) {
+    public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public T getResult() {
+        return result;
+    }
+
+    public void setResult(T result) {
+        this.result = result;
     }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.oooo.dao.NoticeDao">
+    <resultMap id="BaseResultMap" type="com.oooo.model.Notice">
+        <id column="type" property="type" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <update id="update" parameterType="com.oooo.model.Notice">
+        UPDATE notice n SET n.content = '${content}' where n.type = ${type}
+    </update>
+    <select id="findByType" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT * FROM notice n WHERE n.type=${type};
+    </select>
+</mapper>
