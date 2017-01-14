@@ -8,7 +8,7 @@
         <result column="agent_id" property="agentId" jdbcType="INTEGER"/>
         <result column="recharge_num" property="rechargeNum" jdbcType="INTEGER"/>
         <result column="send_num" property="sendNum" jdbcType="INTEGER"/>
-        <result column="recharge_time" property="rechargeTime" jdbcType="DATE"/>
+        <result column="recharge_time" property="rechargeTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
 

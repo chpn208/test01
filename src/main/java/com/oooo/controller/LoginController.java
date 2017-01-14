@@ -30,27 +30,31 @@ public class LoginController {
         HttpSession session = request.getSession();
         //Integer userId = session.getAttribute("userId");
         Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
-        if (userId == null){
+        if (userId == null){//未登陆
             String userIdStr = request.getParameter("userName");
             if (StringUtils.isEmpty(userIdStr) || !StringUtils.isNumeric(userIdStr)){
                 return "/register";
             }else {
                 userId = Integer.parseInt(userIdStr);
+                User user = userService.findById(userId);
+                String password = request.getParameter("password");
+                if (user != null && user.getPassword().equals(password)){
+                    session.setAttribute(Constant.getInstance().USER_ID, user.getId());
+                    List<Menu> menus = menuService.getMenusByUser(user);
+                    model.addAttribute("menus", menus);
+                    return "/index";
+                }
             }
 
-        }
-//        String userId = request.getParameter(Constant.getInstance().USER_ID);
-        /*if (StringUtils.isEmpty(userId) || !StringUtils.isNumeric(userId)){
-            return "/../../register";
-        }*/
-        User user = userService.findById(userId);
-        if (user != null){
-            session.setAttribute(Constant.getInstance().USER_ID,user.getId());
-            List<Menu> menus = menuService.getMenusByUser(user);
-            model.addAttribute("menus",menus);
-            return "/index";
         }else {
-            return "/login";
+            User user = userService.findById(userId);
+            if (user != null) {
+                session.setAttribute(Constant.getInstance().USER_ID, user.getId());
+                List<Menu> menus = menuService.getMenusByUser(user);
+                model.addAttribute("menus", menus);
+                return "/index";
+            }
         }
+        return "/../../login";
     }
 }

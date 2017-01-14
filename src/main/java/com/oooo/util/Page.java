@@ -6,6 +6,8 @@ import java.util.List;
  * Created by chenpan on 17-1-3.
  */
 public class Page<T>{
+    private int startNum;
+    private int endNum;
     private int pageSize;//页面大小
     private int pageNum; //当前页数
     private int prePageNum;//前一页
@@ -13,6 +15,22 @@ public class Page<T>{
     private int pageCount;//总页数
     private int count;//总记录数
     private List<T> result;
+
+    public int getStartNum() {
+        return startNum;
+    }
+
+    public void setStartNum(int startNum) {
+        this.startNum = startNum;
+    }
+
+    public int getEndNum() {
+        return endNum > count ? count:endNum;
+    }
+
+    public void setEndNum(int endNum) {
+        this.endNum = endNum;
+    }
 
     public int getPageSize() {
         return pageSize;
@@ -55,7 +73,7 @@ public class Page<T>{
     }
 
     public int getNextPageNum() {
-        return pageNum == pageCount ? pageNum : pageNum+1;
+        return pageNum+1 >= pageCount ? pageNum : pageNum+1;
     }
 
     public void setNextPageNum(int nextPageNum) {

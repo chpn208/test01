@@ -8,7 +8,7 @@
         <result column="recharge_num" property="rechargeNum" jdbcType="INTEGER"/>
         <result column="send_num" property="sendNum" jdbcType="INTEGER"/>
         <result column="recharge_id" property="rechargeId" jdbcType="INTEGER"/>
-        <result column="time" property="time" jdbcType="TIME"/>
+        <result column="time" property="time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <insert id="add" useGeneratedKeys="true" keyColumn="id" parameterType="com.oooo.model.AgentRechargeInfo">
@@ -33,7 +33,7 @@
         <if test="userId != null">
             AND user_id = #{userId}
         </if>
-        <if test="recharge_id != null">
+        <if test="rechargeId != null">
             AND recharge_id = #{rechargeId}
         </if>
     </select>

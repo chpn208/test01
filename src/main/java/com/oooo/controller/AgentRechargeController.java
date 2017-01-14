@@ -53,8 +53,9 @@ public class AgentRechargeController {
         List<AgentRechargeInfo> list = agentService.getPageAgentRechargeInfo(parameterMap);
         int count= agentService.count(parameterMap);
         int pageCount = count % pageSize ==0 ? count/pageSize : count/pageSize+1;
-
         Page<AgentRechargeInfo> page = new Page<>();
+        page.setStartNum(startNum);
+        page.setEndNum(endNum);
         page.setResult(list);
         page.setPageNum(pageNum);
         page.setPageSize(pageSize);
@@ -113,6 +114,8 @@ public class AgentRechargeController {
         int pageCount = count % pageSize ==0 ? count/pageSize : count/pageSize+1;
 
         Page<AgentRechargeInfo> page = new Page<>();
+        page.setStartNum(startNum);
+        page.setEndNum(endNum);
         page.setResult(list);
         page.setPageNum(pageNum);
         page.setPageSize(pageSize);
@@ -140,6 +143,8 @@ public class AgentRechargeController {
         int count = (int) userService.getCount(parameterMap);
         int pageCount = count % pageSize == 0? count/pageSize : count/pageSize + 1;
         Page<User> page = new Page<>();
+        page.setStartNum(startNum);
+        page.setEndNum(endNum);
         page.setResult(result);
         page.setCount(count);
         page.setPageCount(pageCount);
