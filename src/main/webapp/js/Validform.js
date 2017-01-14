@@ -26,6 +26,7 @@
     })
 })*/
 function checkInput(obj) {
+    debugger
     var a = obj.id;
     var errormsg = obj.placeholder;
     if (obj.value == ""){
@@ -40,7 +41,7 @@ function checkInput(obj) {
             }
         }else
         if (a == "password"){
-            password = obj.value();
+            password = obj.value;
             repassword = $("#repassword").val();
             if (repassword != ""){
                 if (password != repassword){

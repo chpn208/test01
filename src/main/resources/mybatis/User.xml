@@ -73,10 +73,59 @@
     </select>
     <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="com.oooo.model.User">
         INSERT INTO user
-        (name,password,level,status,parent_user,wechart,mobile,province,city,county,detailed_address,agent_num,key_code) VALUES
-        (#{name},#{password},#{level},#{status},#{parentUser},#{wechart},#{mobile},#{province},#{city},#{county},#{detailedAddress},#{agentNum},#{keyCode})
+        (name,password,level,status,parent_user,wechart,mobile,diamond,integral,province,city,county,detailed_address,agent_num,key_code) VALUES
+        (#{name},#{password},#{level},#{status},#{parentUser},#{wechart},#{mobile},#{diamond},#{integral},#{province},#{city},#{county},#{detailedAddress},#{agentNum},#{keyCode})
     </insert>
     <update id="update" parameterType="com.oooo.model.User">
-        UPDATE user u SET u.name = #{name},u.password=#{password}
+        UPDATE user
+        <set>
+            <if test="name != null">
+                name =#{name},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="level != null">
+                level = #{level},
+            </if>
+            <if test="status != null">
+                status =#{status},
+            </if>
+            <if test="parentUser != null">
+                parent_user=#{parentUser},
+            </if>
+            <if test="wechart != null">
+                wechart=#{wechart},
+            </if>
+            <if test="mobile != null">
+                mobile=#{mobile},
+            </if>
+            <if test="diamond != null">
+                diamond=#{diamond},
+            </if>
+            <if test="integral != null">
+                integral=#{integral},
+            </if>
+            <if test="province != null">
+                province =#{province},
+            </if>
+            <if test="city != null">
+                city=#{city},
+            </if>
+            <if test="county != null">
+                county=#{county},
+            </if>
+            <if test="detailedAddress != null">
+                detailed_address =#{detailedAddress},
+            </if>
+            <if test="agentNum != null">
+                agent_num=#{agentNum},
+            </if>
+            <if test="keyCode != null">
+                key_code=#{keyCode}
+            </if>
+
+        </set>
+        where id=#{id}
     </update>
 </mapper>

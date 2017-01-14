@@ -45,10 +45,10 @@
             <td>
                 <div class="pagination-btn-separator"></div>
             </td>
-            <td><a href="javascript:void(0)" class="l-btn l-btn-plain l-btn-disabled" id=""><span
+            <td><a href="javascript:changePage(0)" class="l-btn l-btn-plain l-btn-disabled" id=""><span
                     class="l-btn-left"><span class="l-btn-text"><span class="l-btn-empty pagination-first">&nbsp;</span></span></span></a>
             </td>
-            <td><a href="javascript:void(0)" class="l-btn l-btn-plain l-btn-disabled" id=""><span
+            <td><a href="javascript:changePage(${page.prePageNum})" class="l-btn l-btn-plain l-btn-disabled" id=""><span
                     class="l-btn-left"><span class="l-btn-text"><span class="l-btn-empty pagination-prev">&nbsp;</span></span></span></a>
             </td>
             <td>
@@ -77,4 +77,10 @@
     <div class="pagination-info">1-27共 ${page.count}条</div>
     <div style="clear:both;"></div>
 </div>
+<script type="text/javascript">
+    function changePage(pageNum) {
+        var pageSize = $("#pageSize").val();
+        window.location.href="/agent/my/recharge?pageNum="+pageNum+"&pageSize="+ pageSize;
+    }
+</script>
 

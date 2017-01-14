@@ -8,6 +8,8 @@ import java.util.List;
 public class Page<T>{
     private int pageSize;//页面大小
     private int pageNum; //当前页数
+    private int prePageNum;//前一页
+    private int nextPageNum;//后一页
     private int pageCount;//总页数
     private int count;//总记录数
     private List<T> result;
@@ -42,6 +44,22 @@ public class Page<T>{
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public int getPrePageNum() {
+        return pageNum == 0?pageNum : pageNum-1;
+    }
+
+    public void setPrePageNum(int prePageNum) {
+        this.prePageNum = prePageNum;
+    }
+
+    public int getNextPageNum() {
+        return pageNum == pageCount ? pageNum : pageNum+1;
+    }
+
+    public void setNextPageNum(int nextPageNum) {
+        this.nextPageNum = nextPageNum;
     }
 
     public List<T> getResult() {

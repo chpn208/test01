@@ -55,7 +55,6 @@
         window.location.href="/agent/playerRecharge/playerInfo?playerId="+playerId;
     }
     function openCharge() {
-        debugger
         var playerId = $("#playerId").val();
         $("#dlg").dialog({
             title:"recharge",
@@ -69,7 +68,6 @@
 
     }
     function openChargeList() {
-        debugger
         var playerId = $('#playerId').val();
         $('#dlg').dialog({
             title:"rechargeList",

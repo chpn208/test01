@@ -1335,7 +1335,7 @@ pre.prettyprint {
     z-index: 1031;
 }
 .ace-nav .nav-user-photo {
-    margin: -4px 8px 0 0;
+    margin: 2px 8px 0 0;
     border-radius: 100%;
     border: 2px solid #FFF;
     max-width: 40px;
@@ -19364,4 +19364,16 @@ input.typeahead.scrollable ~ .tt-dropdown-menu {
     .label[class*=arrowed]:after {
         display: none !important;
     }
+}
+.pull-right{
+    float:right;
+    margin-right: 41px;
+}
+
+
+#user-menu{
+    background-color: white;
+    width: 130px;
+    float: left;
+    margin-left: 0px;
 }

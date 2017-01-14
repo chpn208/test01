@@ -76,7 +76,7 @@ public class RegisterController {
             return respMsg;
         }
 
-        if (upAgent != null){
+        if (upAgent != null && upAgent != 0){
             User upAgentUser = userService.findById(upAgent);
             int agentNum = upAgentUser.getAgentNum();
             agentNum+=1;

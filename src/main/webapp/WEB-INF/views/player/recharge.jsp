@@ -54,7 +54,6 @@
 </div>
 <script type="text/javascript">
     function recharge() {
-        debugger
         var playerId = $('#playerId').val();
         var rechargeNum= $('#rechargeNum').val();
         window.location.href="/agent/playerRecharge/recharge?playerId="+playerId+"&rechargeNum="+rechargeNum;

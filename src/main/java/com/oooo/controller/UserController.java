@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.PrivateKey;
 
 /**
@@ -28,29 +29,33 @@ public class UserController {
     UserService userService;
 
     @RequestMapping("/userInfo")
-    public RespMsg<User> getUserInfo(HttpServletRequest request, Model model){
-        RespMsg<User> respMsg = new RespMsg<>();
+    public String getUserInfo(HttpServletRequest request, Model model){
         Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
 
         User user = userService.findById(userId);
 
         if (user == null){
-            respMsg.setCode(201);
-            respMsg.setMsg("用户不存在");
-            return respMsg;
+            return "";
         }
-        user.setPassword("xxxx");
+        model.addAttribute("userId",user.getId());
+        model.addAttribute("userName",user.getName());
+        model.addAttribute("wxNumber",user.getWechart());
+        model.addAttribute("mobile", user.getMobile());
+        model.addAttribute("diamond",user.getDiamond());
+        return "/agent/userInfo";
+    }
 
-        respMsg.setCode(200);
-        respMsg.setResult(user);
-        return respMsg;
-
+    @RequestMapping("userPasswordInfo")
+    public String passwordInfo(HttpServletRequest request){
+        return "/agent/userPassword";
     }
 
     @RequestMapping("updatePassword")
     @ResponseBody
     public RespMsg<String> updatePassword(HttpServletRequest request,
-                                           @RequestParam(value = "password",required = true) String password){
+                                           @RequestParam(value = "oldpassword",required = true)String oldpassword,
+                                           @RequestParam(value = "password",required = true) String password,
+                                          @RequestParam(value = "repassword",required = true)String repassword){
 
         RespMsg<String> respMsg = new RespMsg<>();
         if (StringUtils.isEmpty(password)){
@@ -64,6 +69,12 @@ public class UserController {
             respMsg.setMsg("密码不能超过16位数");
             return respMsg;
         }
+
+        if (!StringUtils.equals(password,repassword)){
+            respMsg.setCode(201);
+            respMsg.setMsg("两次输入的密码不一致");
+            return respMsg;
+        }
         Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
 
         User user = userService.findById(userId);
@@ -74,7 +85,23 @@ public class UserController {
             return respMsg;
         }
 
+        if (!StringUtils.equals(user.getPassword(),oldpassword)){
+            respMsg.setCode(201);
+            respMsg.setMsg("用户密码不正确");
+            return respMsg;
+        }
+
+        user.setPassword(password);
+        userService.updateUser(user);
+        respMsg.setCode(200);
 
         return respMsg;
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.removeAttribute(Constant.getInstance().USER_ID);
+        return "/../../login";
     }
 }

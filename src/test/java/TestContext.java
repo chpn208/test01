@@ -1,7 +1,9 @@
 import com.google.common.collect.Maps;
 import com.oooo.model.AgentRechargeInfo;
+import com.oooo.model.Notice;
 import com.oooo.model.PlayerRechargeInfo;
 import com.oooo.service.AgentService;
+import com.oooo.service.NoticeService;
 import com.oooo.service.PlayerRechargeInfoService;
 import com.oooo.service.UserService;
 import org.junit.runner.RunWith;
@@ -26,6 +28,9 @@ public class TestContext {
 
     @Autowired
     AgentService agentService;
+
+    @Autowired
+    NoticeService noticeService;
     @org.junit.Test
     public void test(){
        /* Map<String,Integer> parameterMap = Maps.newHashMap();
@@ -46,16 +51,11 @@ public class TestContext {
         int count = playerRechargeInfoService.getCount(parameterMap);
         System.out.println(count);*/
 
-        for (int i = 0; i < 10; i++) {
-            AgentRechargeInfo agentRechargeInfo = new AgentRechargeInfo();
-            agentRechargeInfo.setUserId(5);
-            agentRechargeInfo.setRechargeId(1);
-            agentRechargeInfo.setRechargeNum(20);
-            agentRechargeInfo.setSendNum(1);
-            agentRechargeInfo.setTime(new Date());
-
-            agentService.add(agentRechargeInfo);
-        }
+        Notice a = noticeService.findByType(1);
+        System.out.println(a.getContent());
+        a.setContent("sfafsdk");
+        noticeService.update(a);
+        System.out.println(a.getContent());
 
     }
 }
