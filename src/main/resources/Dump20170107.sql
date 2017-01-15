@@ -199,3 +199,9 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2017-01-07 17:03:58
+
+--20170115
+
+INSERT INTO `menu` VALUES
+
+(9,'公告编缉','/admin/notice',99,2,1);
