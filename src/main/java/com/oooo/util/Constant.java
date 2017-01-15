@@ -11,6 +11,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by chenpan on 16-12-31.
@@ -34,6 +35,7 @@ public class Constant {
 
     private Map<Integer,Integer> rechargeMap = Maps.newHashMap();
     private Map<Integer,Notice> noticeMap = Maps.newHashMap();
+    private AtomicInteger userId = new AtomicInteger(100000);
 
     public Map<Integer, RechargeSend> getRechargeSendMap() {
         return rechargeSendMap;
@@ -115,6 +117,18 @@ public class Constant {
 
             noticeMap.put(notice.getType(),notice);
         }
+    }
+
+    public void initUserId (){
+        List<Map<String, Object>> result = serialUtil.getBySQL("select max(id) as maxUserId from user");
+        Map<String, Object> map = result.get(0);
+        int maxUserId = (int) map.get("maxUserId");
+        if (maxUserId > userId.get()){
+            userId.set(maxUserId);
+        }
+    }
+    public int getUserId(){
+        return userId.addAndGet(1);
     }
     public Map<Integer,Integer> getRechargeMap(){
         return rechargeMap;

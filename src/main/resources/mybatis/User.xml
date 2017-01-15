@@ -73,8 +73,8 @@
     </select>
     <insert id="add" useGeneratedKeys="true" keyProperty="id" parameterType="com.oooo.model.User">
         INSERT INTO user
-        (name,password,level,status,parent_user,wechart,mobile,diamond,integral,province,city,county,detailed_address,agent_num,key_code) VALUES
-        (#{name},#{password},#{level},#{status},#{parentUser},#{wechart},#{mobile},#{diamond},#{integral},#{province},#{city},#{county},#{detailedAddress},#{agentNum},#{keyCode})
+        (id,name,password,level,status,parent_user,wechart,mobile,diamond,integral,province,city,county,detailed_address,agent_num,key_code) VALUES
+        (#{id},#{name},#{password},#{level},#{status},#{parentUser},#{wechart},#{mobile},#{diamond},#{integral},#{province},#{city},#{county},#{detailedAddress},#{agentNum},#{keyCode})
     </insert>
     <update id="update" parameterType="com.oooo.model.User">
         UPDATE user

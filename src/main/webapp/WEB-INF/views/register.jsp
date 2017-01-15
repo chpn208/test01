@@ -117,7 +117,7 @@
                 <tr>
                     <td align="right"><label class="Validform_label"> 密码: </label></td>
                     <td class="value">
-                        <input id="password" name="password" type="password" class="inputxt" value="" plugin="passwordStrength" datatype="*6-18">
+                        <input id="password" name="password" type="password" class="inputxt" placeholder="请输入密码" value="" plugin="passwordStrength" onblur="checkInput(this)" datatype="*6-18">
                         <span class="passwordStrength" maxlength="18" style="display: none;">
 	                        <span>弱</span>
 	                        <span>中</span>
@@ -129,7 +129,7 @@
                 <tr>
                     <td align="right"><label class="Validform_label"> 重复密码: </label></td>
                     <td class="value">
-                        <input id="repassword" name="repassword" type="password" class="inputxt Validform_error" value="" recheck="password" maxlength="18" datatype="*6-18" errormsg="两次输入的密码不一致！" nullmsg="请重复密码！">
+                        <input id="repassword" name="repassword" type="password" class="inputxt Validform_error" value="" recheck="password" placeholder="请重复密码" maxlength="18" datatype="*6-18" onblur="checkInput(this)" errormsg="两次输入的密码不一致！" nullmsg="请重复密码！">
                         <span id="validate_repassword" class="validate_repassword,Validform_wrong"></span>
                     </td>
                 </tr>
@@ -169,28 +169,7 @@
 </script>
 <script type="text/javascript">
     $(function () {
-       /* $("#formobj").Validform({
-            tiptype: 4,
-            btnSubmit: "#btn_sub",
-            btnReset: "#btn_reset",
-            ajaxPost: true,
-            usePlugin: {
-                passwordstrength: {
-                    minLen: 6, maxLen: 18, trigger: function (obj, error) {
-                        if (error) {
-                            obj.parent().next().find(".Validform_checktip").show();
-                            obj.find(".passwordStrength").hide();
-                        } else {
-                            $(".passwordStrength").show();
-                            obj.parent().next().find(".Validform_checktip").hide();
-                        }
-                    }
-                }
-            },
-            callback: function (data) {
-                null(data);
-            }
-        });*/
+
 
     });
     /**
@@ -204,20 +183,7 @@
 
     function docLocation(){
         debugger
-        /*
-         var provCode = $('#provSelect').combobox('getValue');
-         var provName = $("#provSelect").combobox('getText');
-         var cityCode = $('#citySelect').combobox('getValue');
-         var cityName = $("#citySelect").combobox('getText');
-         if(provCode=="--请选择--"){
-         alert("请选择省份");
-         return false;
-         }
-         if(cityCode=="--请选择--"){
-         alert("请选择地市");
-         return false;
-         }
-         */
+
         var upAgent = $("#upAgent").val();
         var titleName = $("#titleName").val();
         var weixinCode = $("#weixinCode").val();
@@ -264,7 +230,7 @@
         if ("" == randCodeImage){
             alert("请输入验证码")
             return
-        }/*else {
+        }else {
              var dataCode = $("#randCode").val();
             $.ajax({
                 url: "/checkCode?validateCode=" + dataCode,
@@ -282,7 +248,7 @@
                     return ;
                 }
             })
-        }*/
+        }
 
 
 
@@ -308,6 +274,7 @@
             type: 'post',
             success:function (obj) {
                 if (obj.code == 200){
+                    alert("你的帐号是"+obj.result);
                     window.location.href = "/home/login?userName="+obj.msg;
                 }else {
                     alert(obj.info);

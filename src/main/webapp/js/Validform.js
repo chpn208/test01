@@ -39,21 +39,25 @@ function checkInput(obj) {
             } else {
                 $("#validate_" + a).html(errormsg);
             }
-        }else
-        if (a == "password"){
+        }else if (a == "password"){
             password = obj.value;
             repassword = $("#repassword").val();
             if (repassword != ""){
                 if (password != repassword){
                     $("#validate_repassword").html("重复密码与密码不相同")
+                }else {
+                    $("#validate_" + a).html("");
                 }
+            }else {
+                $("#validate_" + a).html("");
             }
-        }else
-        if (a=="repassword"){
+        }else if (a=="repassword"){
             password = $("#password").val();
             repassword = $("#repassword").val();
             if (password != repassword){
                 $("#validate_repassword").html("重复密码与密码不相同")
+            }else {
+                $("#validate_" + a).html("");
             }
 
         }else if (a=="randCode"){

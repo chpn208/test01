@@ -17,6 +17,7 @@ public class CacheListener implements ServletContextListener {
         Constant.getInstance().initRechargeSendMap();
         Constant.getInstance().initRechargeMap();
         Constant.getInstance().initNoticeType();
+        Constant.getInstance().initUserId();
     }
 
     @Override
