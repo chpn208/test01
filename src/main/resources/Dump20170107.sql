@@ -205,3 +205,35 @@ UNLOCK TABLES;
 INSERT INTO `menu` VALUES
 
 (9,'公告编缉','/admin/notice',99,2,1);
+
+DROP TABLE IF EXISTS `notice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `notice` (
+  `type` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `content` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notice`
+--
+
+LOCK TABLES `notice` WRITE;
+/*!40000 ALTER TABLE `notice` DISABLE KEYS */;
+INSERT INTO `notice` VALUES (1,'大厅公告','2222222222222'),(2,'消息','bbbbbcccceeeee'),(3,'横幅','sssssddddd'),(4,'联系我们','xxxx'),(5,'公告','safsafsafdsadf');
+/*!40000 ALTER TABLE `notice` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-01-15 19:24:15
