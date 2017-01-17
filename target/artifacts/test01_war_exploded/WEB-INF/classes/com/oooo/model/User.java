@@ -12,10 +12,13 @@ public class User {
     private int parentUser;
     private String wechart;
     private long mobile;
+    private int diamond;
+    private int integral;
     private String province;
     private String city;
     private String county;
     private String detailedAddress;
+    private int agentNum;
     private String keyCode;
 
     public int getId() {
@@ -82,6 +85,22 @@ public class User {
         this.mobile = mobile;
     }
 
+    public int getDiamond() {
+        return diamond;
+    }
+
+    public void setDiamond(int diamond) {
+        this.diamond = diamond;
+    }
+
+    public int getIntegral() {
+        return integral;
+    }
+
+    public void setIntegral(int integral) {
+        this.integral = integral;
+    }
+
     public String getProvince() {
         return province;
     }
@@ -112,6 +131,14 @@ public class User {
 
     public void setDetailedAddress(String detailedAddress) {
         this.detailedAddress = detailedAddress;
+    }
+
+    public int getAgentNum() {
+        return agentNum;
+    }
+
+    public void setAgentNum(int agentNum) {
+        this.agentNum = agentNum;
     }
 
     public String getKeyCode() {

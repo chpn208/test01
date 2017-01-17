@@ -1,5 +1,6 @@
 package com.oooo.controller;
 
+import com.oooo.service.PlayerRechargeInfoService;
 import com.oooo.service.TestService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.config.IniSecurityManagerFactory;
@@ -26,13 +27,16 @@ public class TestController {
 
     @Autowired
     TestService service;
+    @Autowired
+    PlayerRechargeInfoService playerRechargeInfoService;
 
     @RequestMapping("/test")
     public void test(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        service.testService();
+//        service.testService();
         System.out.println("controller");
+        playerRechargeInfoService.getAll();
 
-        Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
+      /*  Factory<SecurityManager> factory = new IniSecurityManagerFactory("classpath:shiro.ini");
         SecurityManager manager = factory.getInstance();
 
         SecurityUtils.setSecurityManager(manager);
@@ -41,6 +45,6 @@ public class TestController {
         Subject subject = SecurityUtils.getSubject();
         Session session = subject.getSession();
         RequestDispatcher rd = request.getRequestDispatcher("../test.jsp");
-        rd.forward(request,response);
+        rd.forward(request,response);*/
     }
 }

@@ -26,12 +26,12 @@
     })
 })*/
 function checkInput(obj) {
-    debugger;
+    debugger
     var a = obj.id;
     var errormsg = obj.placeholder;
-    if (obj.value != ""){
-      /*  $("#validate_"+a).html(errormsg);
-    }else {*/
+    if (obj.value == ""){
+        $("#validate_"+a).html(errormsg);
+    }else {
         if (a=="mobilePhone") {
             re = /^1\d{10}$/;
             if (re.test(obj.value)) {
@@ -39,45 +39,73 @@ function checkInput(obj) {
             } else {
                 $("#validate_" + a).html(errormsg);
             }
-        }
-        if (a == "password"){
-            password = obj.value();
+        }else if (a == "password"){
+            password = obj.value;
             repassword = $("#repassword").val();
             if (repassword != ""){
                 if (password != repassword){
                     $("#validate_repassword").html("重复密码与密码不相同")
+                }else {
+                    $("#validate_" + a).html("");
                 }
+            }else {
+                $("#validate_" + a).html("");
             }
-        }
-        if (a=="repassword"){
+        }else if (a=="repassword"){
             password = $("#password").val();
             repassword = $("#repassword").val();
             if (password != repassword){
                 $("#validate_repassword").html("重复密码与密码不相同")
+            }else {
+                $("#validate_" + a).html("");
             }
 
-        }
-        if (a=="randCode"){
+        }else if (a=="randCode"){
+            var dataCode = $("#randCode").val();
             $.ajax({
-                // url:"/checkCode?validateCode="+obj.value,
-                url:"/checkCode",
-                data:{"validateCode":obj.value},
-                success:function (obj) {
-                    if (obj != 200){
+                url: "/checkCode?validateCode="+dataCode,
+                success: function (obj) {
+                    if (obj != 200) {
                         $("#validate_randCode").html("请输入正确的验证码")
-                    }else {
+                    } else {
                         $("#validate_randCode").html("")
                     }
                 },
-                error:function (obj) {
+                error: function (obj) {
                     $("#validate_randCode").html("请输入正确的验证码")
                 }
             })
+           /* if (checkRandomCode(a)){
+                $("#validate_"+a).html("")
+            }else {
+                $("#validate_randCode").html("请填写正确的验证码")
+            }*/
+        }else {
+            $("#validate_"+a).html("")
         }
     }
 
 }
-
+function checkRandomCode(obj) {
+    var dataCode = $("#randCode").val();
+    $.ajax({
+        url: "/checkCode?validateCode="+dataCode,
+        success: function (obj) {
+            if (obj != 200) {
+                //$("#validate_randCode").html("请输入正确的验证码")
+                return false;
+            } else {
+                //$("#validate_randCode").html("")
+                return true;
+            }
+        },
+        error: function (obj) {
+            // $("#validate_randCode").html("请输入正确的验证码")
+            return false;
+        }
+    })
+}
+/*
 (function($, win, undef) {
     var jgfIsPost = true;
     var errorobj = null, msgobj = null, msghidden = true;
@@ -576,11 +604,11 @@ function checkInput(obj) {
                             if (mac[1] === temp[1]) {
                                 var str = Validform.util.dataType[name]
                                     .toString(), param = str
-                                    .match(/\/[mgi]*/g)[1]
+                                    .match(/\/[mgi]*!/g)[1]
                                     .replace("\/", ""), regxp = new RegExp(
                                     "\\{" + temp[2] + "," + temp[3] + "\\}",
                                     "g");
-                                str = str.replace(/\/[mgi]*/g, "\/").replace(
+                                str = str.replace(/\/[mgi]*!/g, "\/").replace(
                                     regxp,
                                     "{" + mac[2] + "," + mac[3] + "}")
                                     .replace(/^\//, "").replace(/\/$/, "");
@@ -660,7 +688,7 @@ function checkInput(obj) {
         parseDatatype : function(datatype) {
             var reg = /\/.+?\/[mgi]*(?=(,|$|\||\s))|[\w\*-]+/g, dtype = datatype
                 .match(reg), sepor = datatype.replace(reg, "").replace(
-                /\s*/g, "").split(""), arr = [], m = 0;
+                /\s*!/g, "").split(""), arr = [], m = 0;
             arr[0] = [];
             arr[0].push(dtype[0]);
             for ( var n = 0; n < sepor.length; n++) {
@@ -698,9 +726,9 @@ function checkInput(obj) {
                 setCenter(msgobj, 100);
             }
             if (msg == "通过信息验证！") {
-                /*setTimeout(function() {
+                /!*setTimeout(function() {
                     msgobj.hide();
-                }, 1000);*/
+                }, 1000);*!/
             }
             if (type == 2 && o.obj) {
                 o.obj.parent().next().find(".Validform_checktip").html(msg);
@@ -1331,10 +1359,10 @@ function checkInput(obj) {
         if ($("#Validform_msg").length !== 0) {
             return false;
         }
-        /*msgobj = $(
+        /!*msgobj = $(
             '<div id="Validform_msg"><div class="Validform_title">' + tipmsg.tit + '<a class="Validform_close" href="javascript:void(0);">&chi;</a></div><div class="Validform_info"></div><div class="iframe"><iframe frameborder="0" scrolling="no" height="100%" width="100%"></iframe></div></div>')
-            .appendTo("body");*/
-  /*      msgobj.find("a.Validform_close").click(function() {
+            .appendTo("body");*!/
+  /!*      msgobj.find("a.Validform_close").click(function() {
             msgobj.hide();
             msghidden = true;
             if (errorobj) {
@@ -1343,7 +1371,7 @@ function checkInput(obj) {
             return false;
         }).focus(function() {
             this.blur();
-        });*/
+        });*!/
         $(window).bind("scroll resize", function() {
             !msghidden && setCenter(msgobj, 400);
         });
@@ -1357,4 +1385,4 @@ function checkInput(obj) {
         msgobj.hide();
         msghidden = true;
     };
-})(jQuery, window)
+})(jQuery, window)*/

@@ -1,6 +1,6 @@
 package com.oooo.filter;
 
-import com.google.inject.internal.Lists;
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.*;

@@ -98,3 +98,35 @@ body {
     height: 50px;
     background-color: #f4f4f4;
 }
+
+.notice{
+    margin-left:100px;
+    margin-top: 30px;;
+}
+.notice > select{
+    height: 30px;
+    width:60px;
+}
+.notice > textarea{
+    height: 100px;
+    width: 500px;
+}
+.notice > input{
+    margin-left:200px;
+    margin-right: 500px;
+    height: 30px;
+    width:60px;
+}
+.notice > .em{
+    margin-bottom: 20px;
+}
+
+#user{
+    background:#62a8d1;
+    margin-right: 40px;
+    padding: 5px;
+    width: 130px;
+    height: 33px;
+    float: right;
+    border: 1px solid #ccc;
+}

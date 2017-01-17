@@ -5,7 +5,9 @@
 <link rel="stylesheet" type="text/css" href="../../../css/tableform.css"/>
 <script type="text/javascript" src="../../easyui/jquery.min.js"></script>
 <script type="text/javascript" src="../../easyui/jquery.easyui.min.js"></script>
-<input type="hidden" id="currentPage" value="${currentPage}"/>
+<input type="hidden" id="pageSize" value="${page.pageSize}"/>
+<input type="hidden" id="pageNum" value="${page.pageNum}"/>
+<input type="hidden" id="pageCount" value="${page.count}"/>
 <div style="width: 1120px">
     <div class="operation">
 
@@ -22,7 +24,7 @@
         </tr>
         </thead>
         <tbody>
-            <c:forEach items="${users}" var="item">
+            <c:forEach items="${page.result}" var="item">
                 <tr>
                     <td>${item.name}</td>
                     <td>${item.password}</td>
@@ -43,9 +45,9 @@
         <tbody>
         <tr>
             <td><select class="pagination-page-list">
-                <option>10</option>
-                <option>20</option>
-                <option>30</option>
+                <option <c:if test="${page.pageSize==10}">selected="selected"</c:if>>10</option>
+                <option <c:if test="${page.pageSize==20}">selected="selected"</c:if>>20</option>
+                <option <c:if test="${page.pageSize==30}">selected="selected"</c:if>>30</option>
             </select></td>
             <td>
                 <div class="pagination-btn-separator"></div>
@@ -60,8 +62,8 @@
                 <div class="pagination-btn-separator"></div>
             </td>
             <td><span style="padding-left:6px;"></span></td>
-            <td><input class="pagination-num" type="text" value="1" size="2"></td>
-            <td><span style="padding-right:6px;">/1</span></td>
+            <td><input class="pagination-num" type="text" value="${page.pageNum}" size="2"></td>
+            <td><span style="padding-right:6px;">/${page.pageCount}</span></td>
             <td>
                 <div class="pagination-btn-separator"></div>
             </td>
@@ -74,11 +76,17 @@
             <td>
                 <div class="pagination-btn-separator"></div>
             </td>
-            <td><a href="javascript:void(0)" class="l-btn l-btn-plain" id=""><span class="l-btn-left"><span
+            <td><a href="javascript:pageChange()" class="l-btn l-btn-plain" id=""><span class="l-btn-left"><span
                     class="l-btn-text"><span class="l-btn-empty pagination-load">&nbsp;</span></span></span></a></td>
         </tr>
         </tbody>
     </table>
-    <div class="pagination-info">1-27共 27条</div>
+    <div class="pagination-info">1-27共 ${page.count}条</div>
     <div style="clear:both;"></div>
 </div>
+
+<script type="text/javascript">
+    function pageChange(){
+        window.location.href="/member/list?pageNum=5"
+    }
+</script>

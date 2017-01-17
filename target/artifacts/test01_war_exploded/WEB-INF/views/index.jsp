@@ -63,9 +63,75 @@
 
         <%--  </div>--%>
     </div>
-    <div data-options="region:'north'" style="height: 40px;background:#438eb9">
-        <div class="title">
-        逗趣运营管理系统
+    <div data-options="region:'north'" style="height: 47px;background:#438eb9">
+        <div class="title navbar">
+      <%--  逗趣运营管理系统--%>
+          <%--  <div class="navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav" style="width: 130px">
+                    <li class="light-blue" id="topUser" style="width: 130px">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <img class="nav-user-photo" src="../../img/icon/user1.png" alt="Jason's Photo">
+                            <span class="user-info">
+									<small style="font-size: 10px">50109</small>
+				                    <span style="color: #666633; font-size: 10px;">代理</span>
+								</span>
+                            <i class="icon-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu pull-right dropdown-menu dropdown-yellow dropdown-caret" id="user-menu" style="background-color: white;width: 130px; float: left;margin-left: 0px">
+                            <li>
+                                <a href="javascript:openUserInfo();">
+                                    <i class="icon-user"></i>
+                                    个人信息
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:openPasswordInfo()">
+                                    <i class="icon-cog"></i>
+                                    修改密码
+                                </a>
+                            </li>
+
+                            <li class="divider"></li>
+                            <li>
+                                <a href="javascript:logout()">
+                                    <i class="icon-off"></i>
+                                    注销
+                                </a>
+                            </li>
+                        </ul>
+                </ul>
+            </div>--%>
+
+          <div id="dlg">
+
+          </div>
+
+          <div id="user">
+              <a href="javascript:void(0)" id="sb1"  >
+                  <img src="../../img/icon/user1.png">
+
+              </a>
+               <span style="font-size: 10px">${sessionScope.userName}</span>
+              <!-- <a href="javascript:void(0)" id="sb2" icon="icon-ok" onclick="javascript:alert('ok')">Ok</a>
+               <a href="javascript:void(0)" id="mb3" icon="icon-help">Help</a>-->
+              <div id="mm1" style="width:150px;">
+                  <div class="icon-user" onclick="openUserInfo()">个人信息</div>
+                  <div class="icon-cog" onclick="openPasswordInfo()">修改密码</div>
+                  <div class="menu-sep" class="icon-off"></div>
+                  <div onclick="logout()">注销</div>
+
+              </div>
+              <!--<div id="mm2" style="width:100px;">
+                  <div icon="icon-ok">Ok</div>
+                  <div icon="icon-cancel">Cancel</div>
+              </div>
+              <div id="mm3" style="width:150px;">
+                  <div>Help3</div>
+                  <div class="menu-sep"></div>
+                  <div>About3</div>
+              </div>-->
+          </div>
         </div>
     </div>
 
@@ -75,4 +141,37 @@
     </div>
 </div>
 </body>
+<script type="text/javascript">
+    function openUserInfo() {
+        $("#dlg").dialog({
+            title:"用户信息",
+            width:400,
+            height:250,
+            close:false,
+            cache:false,
+            href:'/agent/userInfo',
+            modal:true
+        });
+
+    }
+    function openPasswordInfo() {
+        $("#dlg").dialog({
+            title:"修改密码",
+            width:400,
+            height:200,
+            close:false,
+            cache:false,
+            href:'/agent/userPasswordInfo',
+            modal:true
+        });
+
+    }
+    function logout(){
+        window.location.href="/agent/logout"
+    }
+
+
+    $('#sb1').splitbutton({menu:'#mm1'});
+
+</script>
 </html>

@@ -1,6 +1,6 @@
 package com.oooo.service;
 
-import com.google.inject.internal.Lists;
+import com.google.common.collect.Lists;
 import com.oooo.dao.MenuDao;
 import com.oooo.model.Menu;
 import com.oooo.model.User;

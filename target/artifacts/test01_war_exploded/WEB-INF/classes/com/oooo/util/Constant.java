@@ -1,6 +1,7 @@
 package com.oooo.util;
 
-import com.google.inject.internal.Maps;
+import com.google.common.collect.Maps;
+import com.oooo.model.Notice;
 import com.oooo.model.Permissions;
 import com.oooo.model.RechargeSend;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +23,9 @@ public class Constant {
         return constant;
     }
 
+    public final String USER_ID="userName";
+    public final String lobby_server = "127.0.0.1";
+    public final String error_msg = "errorMsg";
 
     private Constant(){
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
@@ -29,6 +33,10 @@ public class Constant {
     }
     private Map<Integer,RechargeSend> rechargeSendMap = Maps.newHashMap();
     private Map<String,Permissions> permissionsMap = Maps.newHashMap();
+
+    private Map<Integer,Integer> rechargeMap = Maps.newHashMap();
+    private Map<Integer,Notice> noticeMap = Maps.newHashMap();
+//    private AtomicInteger usrId = new AtomicInteger(100000);
 
     public Map<Integer, RechargeSend> getRechargeSendMap() {
         return rechargeSendMap;
@@ -40,6 +48,10 @@ public class Constant {
 
     public Map<String, Permissions> getPermissionsMap() {
         return permissionsMap;
+    }
+
+    public Map<Integer,Notice> getNoticeMap(){
+        return noticeMap;
     }
 
     public void setPermissionsMap(Map<String, Permissions> permissionsMap) {
@@ -86,5 +98,45 @@ public class Constant {
             rechargeSend.setReturnNum(returnNum);
             rechargeSendMap.put(rechargeSend.getLevel(), rechargeSend);
         }
+    }
+    public void initRechargeMap(){
+        rechargeMap.put(1,50);
+        rechargeMap.put(2,100);
+        rechargeMap.put(3,200);
+    }
+    public void initNoticeType(){
+        List<Map<String, Object>> result = serialUtil.getBySQL("select * from notice");
+        System.out.println("--------------initNoticeType      result.........."+result);
+        for (Map<String, Object> stringObjectMap : result) {
+            Integer type = (Integer) stringObjectMap.get("type");
+            String name= (String) stringObjectMap.get("name");
+            String content = (String) stringObjectMap.get("content");
+
+            Notice notice = new Notice();
+            notice.setType(type);
+            notice.setName(name);
+            notice.setContent(content);
+
+            noticeMap.put(notice.getType(),notice);
+        }
+    }
+
+   /* public void initUserId (){
+        List<Map<String, Object>> result = serialUtil.getBySQL("select max(id)  from user");
+        Map<String, Object> map = result.get(0);
+        int maxUserId = (int) map.get("max(id)");
+        if (maxUserId > userId.get()){
+            userId.set(maxUserId);
+        }
+    }*/
+  /*  public int getUserId(){
+        return userId.addAndGet(1);
+    }*/
+    public Map<Integer,Integer> getRechargeMap(){
+        return rechargeMap;
+    }
+
+    public SerialUtil getSerialUtil(){
+        return serialUtil;
     }
 }
