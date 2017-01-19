@@ -1,7 +1,6 @@
 package com.oooo.filter;
 
 import com.oooo.model.Permissions;
-import com.oooo.model.User;
 import com.oooo.service.PlayerRechargeInfoService;
 import com.oooo.service.UserService;
 import com.oooo.util.Constant;
@@ -15,8 +14,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-import static org.apache.shiro.web.filter.mgt.DefaultFilter.user;
 
 /**
  * Created by chenpan on 16-12-31.
@@ -39,7 +36,7 @@ public class PermissionsFilter implements Filter {
         }*/
         if (requestDatas.length > 0) {
             String permissionUri = requestDatas[1];
-            Permissions permission = Constant.getInstance().getPermissionsMap().get(permissionUri);
+            Permissions permission = Constant.getInstance().getPermissionsUrlMap().get(permissionUri);
             HttpServletResponse response = (HttpServletResponse) resp;
             if (permission != null) {
                 HttpSession session = request.getSession();

@@ -27,7 +27,8 @@
                 <td>${item.id}</td>
                 <td>${item.level}</td>
                 <td>${item.agentNum}</td>
-                <td><a href="javascript:preAgentRecharge(${item.id})"> 充值</a></td>
+                <td><a href="javascript:preAgentRecharge(${item.id})"> 充值</a>
+                    <a href="javascript:preUpLevel(${item.id})">升级</a></td>
             </tr>
         </c:forEach>
         </tbody>
@@ -91,7 +92,6 @@
     }
 
     function preAgentRecharge(agentId) {
-        debugger
         $("#chargeDlg").dialog({
             title:"recharge",
             width:400,
@@ -99,6 +99,20 @@
             close:false,
             cache:false,
             href:'/agent/preRecharge?agentId='+agentId,
+            modal:true
+        });
+
+    }
+
+    function preUpLevel(agentId) {
+        debugger
+         $("#chargeDlg").dialog({
+            title:"recharge",
+            width:400,
+            height:200,
+            close:false,
+            cache:false,
+            href:'/agent/preUpLevel?agentId='+agentId,
             modal:true
         });
     }

@@ -35,7 +35,8 @@ public class UserController {
         User user = userService.findById(userId);
 
         if (user == null){
-            return "";
+            model.addAttribute(Constant.getInstance().error_msg,"用户不存在");
+            return "/error404";
         }
         model.addAttribute("userId",user.getId());
         model.addAttribute("userName",user.getName());

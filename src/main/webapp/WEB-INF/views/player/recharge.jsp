@@ -40,11 +40,12 @@
                     </label>
                 </td>
                 <td class="value">
-                    <select id="rechargeNum">
+                    <input type="text" id="rechargeNum" name="rechargeNum">
+                  <%--  <select id="rechargeNum">
                         <c:forEach items="${rechargeMap}" var="item">
                             <option value="${item.key}">${item.value}</option>
                         </c:forEach>
-                    </select>
+                    </select>--%>
                 </td>
             </tr>
             </tbody>

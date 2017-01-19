@@ -84,7 +84,6 @@ public class RegisterController {
             userService.updateUser(upAgentUser);
         }
         User user = new User();
-        user.setId(Constant.getInstance().getUserId());
         user.setName(titleName);
         user.setPassword(password);
         user.setMobile(Long.parseLong(mobile));

@@ -13,11 +13,16 @@ public class CacheListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+        System.out.println("------------------------------------------initPermissionMap");
         Constant.getInstance().initPermissionMap();
+        System.out.println("-------------------------------------------initRechargeSendMap");
         Constant.getInstance().initRechargeSendMap();
+        System.out.println("--------------------------------------------initRechargeMap");
         Constant.getInstance().initRechargeMap();
+        System.out.println("----------------------------------------------initNoticeType");
         Constant.getInstance().initNoticeType();
-        Constant.getInstance().initUserId();
+        /*System.out.println("--------------------------------------------------initUserId");
+        Constant.getInstance().initUserId();*/
     }
 
     @Override

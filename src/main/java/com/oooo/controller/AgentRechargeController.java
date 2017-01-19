@@ -2,12 +2,14 @@ package com.oooo.controller;
 
 import com.google.common.collect.Maps;
 import com.oooo.model.AgentRechargeInfo;
+import com.oooo.model.Permissions;
 import com.oooo.model.RechargeSend;
 import com.oooo.model.User;
 import com.oooo.service.AgentService;
 import com.oooo.service.UserService;
 import com.oooo.util.Constant;
 import com.oooo.util.Page;
+import com.oooo.util.RespMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +17,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.sun.xml.internal.ws.api.message.Packet.Status.Request;
+import static org.apache.shiro.web.filter.mgt.DefaultFilter.user;
 
 /**
  * Created by chenpan on 17-1-4.
@@ -71,14 +79,19 @@ public class AgentRechargeController {
 
         Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
         if (userId == null){
-            return "";
+            return "/error404";
         }
         User user = userService.findById(userId);
 
         User agent = userService.findById(agentId);
+        if (agent == null){
+            model.addAttribute(Constant.getInstance().error_msg,"代理商不存在");
+            return "/error404";
+        }
         if (user.getLevel() < 10){
-           if (agent.getParentUser() != userId){
-               return "";
+            if (agent.getParentUser() != userId){
+               model.addAttribute(Constant.getInstance().error_msg,"不是你的代理商");
+               return "/error404";
            }
         }
 
@@ -87,13 +100,65 @@ public class AgentRechargeController {
         model.addAttribute("sendNum",rechargeSend.getReturnNum());
         model.addAttribute("countDiamond",user.getDiamond());
 
-        if (agent == null){
-            return "";
-        }
 
         model.addAttribute("agent",agent);
         return "/agent/recharge";
     }
+
+    @RequestMapping("/preUpLevel")
+    public String preUpdateLevel(HttpServletRequest request,Model model,
+                                 @RequestParam(value ="agentId",required = true) int agentId){
+        Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
+        User user = userService.findById(userId);
+        User targetUser = userService.findById(agentId);
+        if (targetUser == null){
+            model.addAttribute(Constant.getInstance().error_msg,"目标代理商不存在");
+            return "/error404";
+        }
+        Map<Integer, Permissions> permissionMap = Constant.getInstance().getPermissionsMap();
+        Permissions permissions = permissionMap.get(user.getLevel());
+        model.addAttribute("agentId",targetUser.getId());
+        model.addAttribute("agentName",targetUser.getName());
+        model.addAttribute("agentLevel",permissions.getLevel());
+        Collection<Permissions> permissionsList = Constant.getInstance().getPermissionsMap().values();
+        List<Permissions> myPermissionsList = permissionsList.stream().filter((e) -> (e.getLevel() < permissions.getLevel())).collect(Collectors.toList());
+        model.addAttribute("permissions",myPermissionsList);
+        return "/agent/updateLevel";
+    }
+    @RequestMapping("/updateLevel")
+    @ResponseBody
+    public RespMsg<String> updateLevel(HttpServletRequest request, Model model,
+                               @RequestParam(value = "agentId",required = true)int agentId,
+                               @RequestParam(value = "level",required = true)int level){
+        RespMsg<String> respMsg = new RespMsg<>();
+        Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
+        User user = userService.findById(userId);
+        User targetUser = userService.findById(agentId);
+        respMsg.setCode(201);
+        if (targetUser == null){
+            respMsg.setMsg("目标代理商不存在");
+            return respMsg;
+        }
+        if (user.getLevel() <=10 && targetUser.getParentUser() != userId){
+            respMsg.setMsg("该代理商不是您的下家代理商");
+            return respMsg;
+        }
+
+        if (level >= user.getLevel()){
+            respMsg.setMsg("不可以调整高于自己的等级");
+            return respMsg;
+        }
+        Permissions permissions = Constant.getInstance().getPermissionsMap().get(level);
+        if (permissions == null){
+            respMsg.setMsg("不可以调到该等级");
+            return respMsg;
+        }
+        targetUser.setLevel(level);
+        userService.updateUser(targetUser);
+        respMsg.setCode(200);
+        return respMsg;
+    }
+
     @RequestMapping("/my/buyed")
     public String myByedRecharges(HttpServletRequest request,Model model,
                                   @RequestParam(value = "pageNum",defaultValue = "0") int pageNum,

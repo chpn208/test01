@@ -1,19 +1,17 @@
-import com.google.common.collect.Maps;
-import com.oooo.model.AgentRechargeInfo;
-import com.oooo.model.Notice;
-import com.oooo.model.PlayerRechargeInfo;
-import com.oooo.service.AgentService;
-import com.oooo.service.NoticeService;
-import com.oooo.service.PlayerRechargeInfoService;
-import com.oooo.service.UserService;
+import com.oooo.model.BroadCast;
+import com.oooo.model.Permissions;
+import com.oooo.service.*;
+import com.oooo.util.Constant;
+import org.junit.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by chenpan on 17-1-4.
@@ -31,6 +29,9 @@ public class TestContext {
 
     @Autowired
     NoticeService noticeService;
+
+    @Autowired
+    BroadCastService broadCastService;
     @org.junit.Test
     public void test(){
        /* Map<String,Integer> parameterMap = Maps.newHashMap();
@@ -50,12 +51,24 @@ public class TestContext {
         List<PlayerRechargeInfo> a = playerRechargeInfoService.getByPage(parameterMap);
         int count = playerRechargeInfoService.getCount(parameterMap);
         System.out.println(count);*/
+        Constant.getInstance().initPermissionMap();
+        Map<String, Permissions> permissionMap = Constant.getInstance().getPermissionsUrlMap();
 
-        Notice a = noticeService.findByType(1);
-        System.out.println(a.getContent());
-        a.setContent("sfafsdk");
-        noticeService.update(a);
-        System.out.println(a.getContent());
+        List<Map.Entry<String, Permissions>> myPermissionsMap =
+                permissionMap.entrySet().stream().filter((e) -> (e.getValue().getLevel() < 8)).collect(Collectors.toList());
+        System.out.println(myPermissionsMap);
+    }
 
+
+    @org.junit.Test
+    public void testBroadCast(){
+        BroadCast broadCast = new BroadCast();
+        broadCast.setContent("fafafsaf");
+        broadCast.setDesc("dfafasf");
+        broadCastService.add(broadCast);
+        BroadCast a = broadCastService.findById(1);
+        a.setContent("bbbbbbbbbbb");
+        broadCastService.update(a);
+        System.out.println(a);
     }
 }

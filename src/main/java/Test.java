@@ -1,30 +1,41 @@
-import com.oooo.service.TestAopService;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import jdk.nashorn.internal.runtime.ListAdapter;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.Executors;
 
 /**
  * Created by Administrator on 2016/9/18.
  */
 public class Test {
     public static void main(String[] args) throws IOException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        /*User user = context.getBean(User.class, "user");
-        System.out.println(user.getId());*/
-        TestAopService testAopService = context.getBean(TestAopService.class,"testAopService");
-        testAopService.service();
-        System.out.println(testAopService.getId());
+        List<String> a = Arrays.asList("aaaa", "bb", "ccc");
+        System.out.println(a);
+        /*a.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.length() - o2.length();
+            }
+        });*/
+        a.sort((e1,e2)-> {return e1.length() - e2.length();});
+        a.forEach((String b) -> {
+            System.out.println(b);
+        });
 
-       /* Reader reader = Resources.getResourceAsReader("Configuration.xml");
-        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(reader);
-        SqlSession session = sessionFactory.openSession();
-        UserDao userDao = session.getMapper(UserDao.class);
-        //User user = session.selectOne("com.oooo.dao.UserDao.getById",1);
-        User user = userDao.getById(1);
-        System.out.println(user.getName());
-        user.setName("bbbbc");
-        userDao.update(user);
-        session.commit();*/
+        Arrays.asList(new String[]{"a","b","c"}).sort((String x,String b)->{
+            return x.length() - b.length();
+        });
+
+
+        Runnable r = ()-> System.out.println("123");
+        Executors.callable(()-> System.out.println(123));
+    }
+
+    public static int add(int a,int b){
+        return a+b;
     }
 }
+
