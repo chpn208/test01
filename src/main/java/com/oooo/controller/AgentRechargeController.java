@@ -239,7 +239,7 @@ public class AgentRechargeController {
             }
         }
         RechargeSend rechargeSend = Constant.getInstance().getRechargeSendMap().get(user.getLevel());
-        int sendCount = rechargedNum /rechargeSend.getRechargeNum();
+        int sendCount = rechargedNum /rechargeSend.getRechargeNum() * rechargeSend.getReturnNum();
         synchronized (this){
             if (user.getLevel() <= 10) {
                 if (user.getDiamond() < rechargedNum){

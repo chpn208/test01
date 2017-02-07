@@ -48,15 +48,28 @@ public class PlayerRechargeInfoController {
     UserService userService;
 
     @RequestMapping("/playerInfo")
-    public String getPlayerInfo(HttpServletRequest request,Model model){
+    public String getPlayerInfo(HttpServletRequest request,Model model) {
         String playerIdStr = request.getParameter("playerId");
-        if (StringUtils.isNumeric(playerIdStr)){
+        if (StringUtils.isNumeric(playerIdStr)) {
             Integer playerId = Integer.parseInt(playerIdStr);
-            //TODO:: request game api
+            IRemoteService remoteService = HessianUtil.getLobbyRemoteService(Constant.getInstance().lobby_server);
+            Player player = null;
+            try {
+                player = remoteService.getPlayerByAccountId(playerId);
+            } catch (Exception e) {
+                logger.info("precharge ===== remoteService get player by account id error" + e);
+                model.addAttribute(Constant.getInstance().error_msg, "远程连接错误");
+                model.addAttribute("e", e.getMessage());
+                return "/error404";
+            }
+            if (player == null){
+                model.addAttribute(Constant.getInstance().error_msg, "玩家ID不存在");
+                return "/error404";
+            }
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("playerId",playerId);
-            jsonObject.put("status","正常");
-            model.addAttribute("player",jsonObject);
+            jsonObject.put("playerId", player.getAccountId());
+            jsonObject.put("status", "正常");
+            model.addAttribute("player", jsonObject);
         }
         return "/player/playerInfo";
     }
@@ -99,11 +112,13 @@ public class PlayerRechargeInfoController {
             player = remoteService.getPlayerByAccountId(playerId);
         }catch (Exception e){
             logger.info("precharge ===== remoteService get player by account id error" + e);
-            model.addAttribute(Constant.getInstance().error_msg,"玩家ID不存在");
+            model.addAttribute(Constant.getInstance().error_msg,"远程连接错误");
+            model.addAttribute("e",e.getMessage());
             return "/error404";
         }
         if (player == null){
             model.addAttribute(Constant.getInstance().error_msg,"玩家ID不存在");
+            model.addAttribute("e","找不到玩家");
             return "/error404";
         }
         RechargeSend rechargeSend = Constant.getInstance().getRechargeSendMap().get(user.getLevel());
@@ -124,7 +139,7 @@ public class PlayerRechargeInfoController {
     @RequestMapping("/recharge")
     public String recharge(HttpServletRequest request,Model model,
                            @RequestParam(value = "playerId",required = true) int playerId,
-                           @RequestParam(value = "rechareNum",required = true) int rechargeNum){
+                           @RequestParam(value = "rechargeNum",required = true) int rechargeNum){
         Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
         User user = userService.findById(userId);
         PlayerRechargeInfo playerRechargeInfo = new PlayerRechargeInfo();

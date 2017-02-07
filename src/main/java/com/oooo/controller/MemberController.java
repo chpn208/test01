@@ -151,13 +151,14 @@ public class MemberController {
         return respMsg;
     }
 
-    @RequestMapping("/broadcasts")
+    @RequestMapping("/broadcast")
     public String broadcast(Model model){
         List<BroadCast> broadCasts = broadCastService.findAll();
         model.addAttribute("broadCasts",broadCasts);
         return "/member/broadcast";
     }
     @RequestMapping("/updateBroadCasts")
+    @ResponseBody
     public RespMsg<String> update(HttpServletRequest request,
                                   @RequestParam(value = "broadCasts",required = true) List<BroadCast> broadCasts){
         IRemoteService remoteService = HessianUtil.getLobbyRemoteService(Constant.getInstance().lobby_server);
