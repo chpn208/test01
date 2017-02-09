@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -69,13 +70,29 @@ public class MemberController {
                 long count = userService.getCount(parameterMap);
                 long pageCount = count%pageSize == 0?count/pageSize : count / pageSize +1;
                 userPage.setPageCount((int) pageCount);
-                userPage.setPageNum(pageNum+1);
+                userPage.setPageNum(pageNum);
                 userPage.setPageSize(pageSize);
                 userPage.setCount((int) count);
                 model.addAttribute("page",userPage);
             }
         }
         return "/member/list";
+    }
+
+    @RequestMapping("/del/{memberId}")
+    @ResponseBody
+    public RespMsg<String> delMember(@PathVariable(value = "memberId") int memberId){
+        RespMsg respMsg = new RespMsg();
+        respMsg.setCode(200);
+        User targetUser = userService.findById(memberId);
+        if (targetUser == null){
+            respMsg.setCode(300);
+            respMsg.setMsg("用户不存在");
+        }
+
+        targetUser.setStatus(1);
+        userService.updateUser(targetUser);
+        return respMsg;
     }
 
     /**

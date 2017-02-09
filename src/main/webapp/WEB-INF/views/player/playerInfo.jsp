@@ -28,6 +28,7 @@
             <th data-options="field:'playerName',width:80">玩家id</th>
             <th data-options="field:'nickName',width:100">玩家状态</th>
             <th data-options="field:'options',width:120">操作</th>
+
         </tr>
         </thead>
         <tbody>
@@ -43,6 +44,7 @@
                     [<a href="javascript:openCharge()">充值</a>]
                     [<a href="javascript:openChargeList()">充值详情</a>]
                 </td>
+
                 </c:if>
             </tr>
         </tbody>
@@ -80,4 +82,5 @@
         })
 
     }
+
 </script>

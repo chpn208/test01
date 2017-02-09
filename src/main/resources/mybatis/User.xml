@@ -57,14 +57,15 @@
 
     <select id="getPageMembers" parameterType="java.util.Map" resultMap="BaseResultMap" resultType="com.oooo.model.User">
         SELECT * FROM user u
+        WHERE 0=0
         <![CDATA[
-         WHERE u.level < 99;
+         AND u.level < 99
          ]]>
         <if test="userlevel != 99">
          AND  u.parentUser = #{id}
         </if>
 
-        <if test="startNum!= 0 and endNum != 0">
+        <if test="startNum!= null and endNum != null">
             limit #{startNum},#{endNum}
         </if>
     </select>

@@ -59,6 +59,7 @@
             success:function (obj) {
                if(obj.code == 200){
                    $("#noticeContent").val(obj.msg);
+                   alert("修改成功");
                }else {
                    alert(obj.msg);
                }
