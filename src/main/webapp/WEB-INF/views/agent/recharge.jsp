@@ -53,6 +53,21 @@
         debugger
         var agentId= $('#agentId').val();
         var rechargeNum= $('#rechargeNum').val();
-        window.location.href="/agent/agentRecharge?agentId="+agentId+"&rechargedNum="+rechargeNum;
+        var obj = new Object();
+        obj.agentId = agentId;
+        obj.rechargedNum = rechargeNum;
+        $.ajax({
+            url:"/agent/agentRecharge",
+            data:obj,
+            type:"post",
+            success:function (data) {
+                if (data.code == 200){
+                    alert("充值成功")
+                }else {
+                    alert("充值失败:"+data.msg);
+                }
+            }
+        })
+//        window.location.href="/agent/agentRecharge?agentId="+agentId+"&rechargedNum="+rechargeNum;
     }
 </script>

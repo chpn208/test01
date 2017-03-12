@@ -26,7 +26,9 @@
                     <select id="agentLevel" class="input">
                         <c:forEach items="${permissions}" var="item">
                             <option value="${item.level}"
-                                    <c:if test="${item.level == agentLevel}">selected:selected</c:if>>${item.desc}</option>
+                                    <c:if test="${item.level == agentLevel}">selected="selected"</c:if>>${item.desc}
+                                    <%--<c:if test="${item.level == agentLevel}">selected:selected</c:if>>${item.desc}--%>
+                            </option>
                         </c:forEach>
                     </select>
                 </td>
@@ -40,6 +42,7 @@
 </div>
 <script type="text/javascript">
     function updateAgentLevel() {
+        debugger
         var agentId = $("#agentId").val();
         var level = $("#agentLevel").val();
         var obj = new Object();
@@ -49,7 +52,7 @@
             url:"/agent/updateLevel",
             data:obj,
             type:"post",
-            sucess:function (data) {
+            success:function (data) {
                 if (data.code == 200){
                     alert("修改成功");
                 }else {

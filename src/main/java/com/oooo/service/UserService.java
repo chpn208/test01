@@ -3,6 +3,7 @@ package com.oooo.service;
 import com.google.common.collect.Maps;
 import com.mysql.jdbc.StringUtils;
 import com.oooo.dao.UserDao;
+import com.oooo.model.RechargeSend;
 import com.oooo.model.User;
 import com.oooo.util.Constant;
 import com.oooo.util.MD5;
@@ -77,5 +78,37 @@ public class UserService {
     public long getCount(Map<String,Integer> parameterMap){
         long count = dao.getCount(parameterMap);
         return count;
+    }
+    public boolean addUserDiamond(User user,int diamondNum) {
+        try {
+            RechargeSend rechargeSend = Constant.getInstance().getRechargeSendMap().get(user.getLevel());
+            int sendCount = diamondNum / rechargeSend.getRechargeNum() * rechargeSend.getReturnNum();
+            int parentUserId = user.getParentUser();
+            int diamondCount = user.getDiamond() + diamondNum + sendCount;
+            user.setDiamond(diamondCount);
+            updateUser(user);
+            User parentUser = findById(parentUserId);
+            if (parentUser != null) {
+                int returnValue = diamondNum / 10;
+                diamondCount = parentUser.getDiamond() + returnValue;
+                parentUser.setDiamond(diamondCount);
+                updateUser(parentUser);
+
+                User grandParent = findById(parentUser.getParentUser());
+                while (grandParent != null) {
+                    returnValue = diamondNum / 5;
+                    diamondCount = grandParent.getDiamond() + returnValue;
+                    grandParent.setDiamond(diamondCount);
+
+                    grandParent = findById(grandParent.getParentUser());
+                    updateUser(grandParent);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("add diamond error:" + e.toString());
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }

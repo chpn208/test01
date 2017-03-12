@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.Date;
@@ -76,33 +77,42 @@ public class AgentRechargeController {
     @RequestMapping("/preRecharge")
     public String preAgentRecharge(HttpServletRequest request,Model model,
                                    @RequestParam(value = "agentId",required = true) Integer agentId){
+        try {
 
-        Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
-        if (userId == null){
+            Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
+            if (userId == null) {
+                return "/error404";
+            }
+            User user = userService.findById(userId);
+            if (user == null){
+                model.addAttribute(Constant.getInstance().error_msg, "用户不存在");
+                return "/error404";
+            }
+
+            User agent = userService.findById(agentId);
+            if (agent == null) {
+                model.addAttribute(Constant.getInstance().error_msg, "代理商不存在");
+                return "/error404";
+            }
+            if (user.getLevel() < 10) {
+                if (agent.getParentUser() != userId) {
+                    model.addAttribute(Constant.getInstance().error_msg, "不是你的代理商");
+                    return "/error404";
+                }
+            }
+
+            RechargeSend rechargeSend = Constant.getInstance().getRechargeSendMap().get(user.getLevel());
+            model.addAttribute("chargeNum", rechargeSend.getRechargeNum());
+            model.addAttribute("sendNum", rechargeSend.getReturnNum());
+            model.addAttribute("countDiamond", user.getDiamond());
+
+
+            model.addAttribute("agent", agent);
+            return "/agent/recharge";
+        }catch (Exception e){
+            model.addAttribute("e",e.toString());
             return "/error404";
         }
-        User user = userService.findById(userId);
-
-        User agent = userService.findById(agentId);
-        if (agent == null){
-            model.addAttribute(Constant.getInstance().error_msg,"代理商不存在");
-            return "/error404";
-        }
-        if (user.getLevel() < 10){
-            if (agent.getParentUser() != userId){
-               model.addAttribute(Constant.getInstance().error_msg,"不是你的代理商");
-               return "/error404";
-           }
-        }
-
-        RechargeSend rechargeSend = Constant.getInstance().getRechargeSendMap().get(user.getLevel());
-        model.addAttribute("chargeNum",rechargeSend.getRechargeNum());
-        model.addAttribute("sendNum",rechargeSend.getReturnNum());
-        model.addAttribute("countDiamond",user.getDiamond());
-
-
-        model.addAttribute("agent",agent);
-        return "/agent/recharge";
     }
 
     @RequestMapping("/preUpLevel")
@@ -119,9 +129,10 @@ public class AgentRechargeController {
         Permissions permissions = permissionMap.get(user.getLevel());
         model.addAttribute("agentId",targetUser.getId());
         model.addAttribute("agentName",targetUser.getName());
-        model.addAttribute("agentLevel",permissions.getLevel());
+        model.addAttribute("agentLevel",targetUser.getLevel());
         Collection<Permissions> permissionsList = Constant.getInstance().getPermissionsMap().values();
-        List<Permissions> myPermissionsList = permissionsList.stream().filter((e) -> (e.getLevel() < permissions.getLevel())).collect(Collectors.toList());
+        List<Permissions> myPermissionsList = permissionsList.stream().filter((e) ->
+                (e.getLevel() < permissions.getLevel())).collect(Collectors.toList());
         model.addAttribute("permissions",myPermissionsList);
         return "/agent/updateLevel";
     }
@@ -197,13 +208,16 @@ public class AgentRechargeController {
                                @RequestParam(value = "pageSize",defaultValue = "10")Integer pageSize){
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute(Constant.getInstance().USER_ID);
-
-        Map<String,Integer> parameterMap = Maps.newHashMap();
-        parameterMap.put("parentUser",userId);
+        User user = userService.findById(userId);
+        Map<String, Integer> parameterMap = Maps.newHashMap();
+        if (user.getLevel() < 99) {
+            parameterMap.put("parentUser", userId);
+        }
         int startNum = pageNum * pageSize;
         int endNum = (pageNum + 1) * pageSize;
         parameterMap.put("startNum",startNum);
         parameterMap.put("endNum",endNum);
+
         List<User> result = userService.findMembers(parameterMap);
         int count = (int) userService.getCount(parameterMap);
         int pageCount = count % pageSize == 0? count/pageSize : count/pageSize + 1;
@@ -222,36 +236,47 @@ public class AgentRechargeController {
 
 
     @RequestMapping("/agentRecharge")
-    public String recharge(HttpServletRequest request,Model model,
-                           @RequestParam(value = "agentId",required = true) int toUserId,
-                           @RequestParam(value = "rechargedNum",required = true) int rechargedNum){
+    @ResponseBody
+    public RespMsg<String> recharge(HttpServletRequest request, Model model,
+                                    @RequestParam(value = "agentId",required = true) int toUserId,
+                                    @RequestParam(value = "rechargedNum",required = true) int rechargedNum){
+        RespMsg<String> respMsg = new RespMsg<>();
+        respMsg.setCode(200);
         HttpSession session = request.getSession();
         //String userName = (String) session.getAttribute("userName");
         Integer userId = (Integer) session.getAttribute(Constant.getInstance().USER_ID);
         User user = userService.findById(userId);
         User toUser = userService.findById(toUserId);
-        if (toUser.getParentUser() != userId){
-            return "201";
+        if (user.getLevel() < 99 && toUser.getParentUser() != userId){
+            respMsg.setCode(201);
+            respMsg.setMsg("不是该代理商的父级代理商");
+            return respMsg;
         }
         if (user.getLevel() < 10){
-            if (toUser.getParentUser() != userId){
-               return "202" ;
+            if (toUser.getParentUser() != userId) {
+                respMsg.setCode(201);
+                respMsg.setMsg("不是该代理商的父级代理商");
+                return respMsg;
             }
         }
         RechargeSend rechargeSend = Constant.getInstance().getRechargeSendMap().get(user.getLevel());
         int sendCount = rechargedNum /rechargeSend.getRechargeNum() * rechargeSend.getReturnNum();
         synchronized (this){
             if (user.getLevel() <= 10) {
-                if (user.getDiamond() < rechargedNum){
-                    return "203";
+                if (user.getDiamond() < rechargedNum) {
+                    respMsg.setCode(201);
+                    respMsg.setMsg("你的钻石不足");
+                    return respMsg;
                 }
-                int diamond = user.getDiamond() - rechargedNum;
-                user.setDiamond(diamond);
-                userService.updateUser(user);
+                //int diamond = user.getDiamond() - rechargedNum;
+                //user.setDiamond(diamond);
+                //userService.updateUser(user);
             }
-            int countDiamond = toUser.getDiamond()+rechargedNum + sendCount;
-            toUser.setDiamond(countDiamond);
-            userService.updateUser(toUser);
+
+//            int countDiamond = toUser.getDiamond()+rechargedNum + sendCount;
+//            toUser.setDiamond(countDiamond);
+//            userService.updateUser(toUser);
+            userService.addUserDiamond(toUser,rechargedNum);
             AgentRechargeInfo agentRechargeInfo = new AgentRechargeInfo();
             agentRechargeInfo.setRechargeNum(rechargedNum);
             agentRechargeInfo.setSendNum(sendCount);
@@ -261,7 +286,7 @@ public class AgentRechargeController {
             agentService.add(agentRechargeInfo);
         }
 
-        return "/agent/rechargeList";
+        return  respMsg;
     }
 
     @RequestMapping("/recommend")

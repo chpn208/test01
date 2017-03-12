@@ -61,8 +61,8 @@
         <![CDATA[
          AND u.level < 99
          ]]>
-        <if test="userlevel != 99">
-         AND  u.parentUser = #{id}
+        <if test="userlevel != 99 and userlevel != 100">
+         AND  u.parent_user= #{id}
         </if>
 
         <if test="startNum!= null and endNum != null">

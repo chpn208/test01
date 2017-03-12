@@ -13,6 +13,7 @@ public class Menu {
     private int level;
     private int menuLevel;
     private int parentId;
+    private int sequence;
     private List<Menu> children = new ArrayList<>();
 
     public int getId() {
@@ -69,5 +70,13 @@ public class Menu {
 
     public void setChildren(List<Menu> children) {
         this.children = children;
+    }
+
+    public int getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
     }
 }

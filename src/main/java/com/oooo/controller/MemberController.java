@@ -61,9 +61,14 @@ public class MemberController {
         Integer userId = (Integer) session.getAttribute(Constant.getInstance().USER_ID);
         if (userId != null){
             User user = userService.findById(userId);
-            if (user != null && user.getLevel() == 99){
+            if (user != null && user.getLevel() >= 99){
                 Page<User> userPage = new Page<>();
                 List<User> users = userService.getByPage(user,pageSize,pageNum);
+                if (user.getLevel() < 100){
+                    for (User user1 : users) {
+                        user1.setPassword("******");
+                    }
+                }
                 userPage.setResult(users);
 
                 Map<String,Integer> parameterMap = Maps.newHashMap();
@@ -74,6 +79,7 @@ public class MemberController {
                 userPage.setPageSize(pageSize);
                 userPage.setCount((int) count);
                 model.addAttribute("page",userPage);
+                model.addAttribute("agentLevel",user.getLevel());
             }
         }
         return "/member/list";
@@ -140,15 +146,18 @@ public class MemberController {
         }
 
         notice.setContent(noticeContent);
-        noticeService.update(notice);
-        IRemoteService service = HessianUtil.getLobbyRemoteService("127.0.0.1");
-        Collection<GateServer> gateServerList = service.getGateServerList();
+        //IRemoteService service = HessianUtil.getLobbyRemoteService("127.0.0.1");
+        IRemoteService remoteService = HessianUtil.getLobbyRemoteService(Constant.getInstance().lobby_server);
+        Collection<GateServer> gateServerList = remoteService.getGateServerList();
         for (GateServer gateServer : gateServerList) {
             try {
                 RpcClient rpcClient = new RpcClient();
                 ProtobufRpcProxy<NoticeRpcService> pbrpcProxy = new ProtobufRpcProxy<NoticeRpcService>(rpcClient, NoticeRpcService.class);
+                logger.info("rpcIp:"+gateServer.getRpcIp());
+                logger.info("rpcPort:"+gateServer.rpcPort);
+                System.out.println("rpcIp:"+gateServer.getRpcIp()+",rpcPort:"+gateServer.getRpcPort());
                 pbrpcProxy.setPort(gateServer.rpcPort);
-                pbrpcProxy.setHost(gateServer.getServerIp());
+                pbrpcProxy.setHost(gateServer.getRpcIp());
 
                 MsgInfo msgInfo = new MsgInfo();
                 msgInfo.setMessage(JSON.toJSONString(notice));
@@ -163,6 +172,7 @@ public class MemberController {
                 e.printStackTrace();
             }
         }
+        noticeService.update(notice);
         respMsg.setCode(200);
         respMsg.setMsg(noticeContent);
         return respMsg;

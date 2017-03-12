@@ -145,7 +145,7 @@ public class PlayerRechargeInfoController {
         PlayerRechargeInfo playerRechargeInfo = new PlayerRechargeInfo();
         int level = user.getLevel();
         int surplusDiamond = user.getDiamond() - rechargeNum;
-        if (surplusDiamond < 0){
+        if (level < 99 && surplusDiamond < 0){
             model.addAttribute(Constant.getInstance().error_msg,"你的钻石不足");
             return "/error404";
         }

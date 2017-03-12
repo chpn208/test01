@@ -9,11 +9,12 @@
         <result column="level" property="level" jdbcType="INTEGER"/>
         <result column="menu_level" property="menuLevel" jdbcType="INTEGER"/>
         <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+        <result column="sequence" property="sequence" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="getMenusByLevel" parameterType="int" resultMap="BaseResultMap">
         select
-          m.id,m.name,m.url,m.level,m.menu_level,m.parent_id
+          m.id,m.name,m.url,m.level,m.menu_level,m.parent_id,m.sequence
         FROM menu m
         WHERE
         <![CDATA[
