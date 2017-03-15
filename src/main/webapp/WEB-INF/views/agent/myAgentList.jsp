@@ -1,6 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.66dear.cn/jsp/jstl/util" prefix="fn"%>
 <link rel="stylesheet" type="text/css" href="../../../easyui/themes/default/easyui.css"/>
 <link rel="stylesheet" type="text/css" href="../../../easyui/themes/icon.css"/>
 <link rel="stylesheet" type="text/css" href="../../../css/tableform.css"/>
@@ -25,7 +26,10 @@
         <c:forEach items="${page.result}" var="item">
             <tr>
                 <td>${item.id}</td>
-                <td>${item.level}</td>
+                <%--<td>${item.level}</td>--%>
+                <td>
+                    ${fn:permissionName(item.level)}
+                </td>
                 <td>${item.agentNum}</td>
                 <td><a href="javascript:preAgentRecharge(${item.id})"> 充值</a>
                     <%--<a href="javascript:preUpLevel(${item.id})">升级</a--%>></td>
@@ -92,13 +96,14 @@
     }
 
     function preAgentRecharge(agentId) {
+        debugger
         $("#chargeDlg").dialog({
             title:"recharge",
             width:400,
             height:200,
             close:false,
             cache:false,
-            href:'/agent/preRecharge?agentId='+agentId,
+            href:'/agent/preRecharge?agentId='+agentId +'&url='+'/agent/myAgentList'+'&pageSize='+$('#pageSize').val()+'&pageNum='+$('#pageNum').val(),
             modal:true
         });
 

@@ -18,16 +18,11 @@
     <div class="operation">
         <a href="" >刷新</a>
     </div>
-    <%!
-        String getAgentLevel(int level){
-            Map<Integer, Permissions> permissionMap = Constant.getInstance().getPermissionsMap();
-            Permissions permission = permissionMap.get(level);
-            return permission.getDesc();
-        }
-    %>
+
     <table class="easyui-datagrid"style="width:1120px;height:auto">
         <thead>
         <tr>
+            <th data-options="field:'id',width:50">会员id</th>
             <th data-options="field:'membername',width:80">代理商名</th>
             <th data-options="field:'memberpassword',width:100">代理商密码</th>
             <th data-options="field:'memberlevel',width:80">代理商等级</th>
@@ -39,6 +34,7 @@
         <tbody>
             <c:forEach items="${page.result}" var="item">
                 <tr>
+                    <td>${item.id}</td>
                     <td>${item.name}</td>
                     <td>${item.password}</td>
                     <td>
@@ -94,8 +90,7 @@
             <td>
                 <div class="pagination-btn-separator"></div>
             </td>
-        <%--    <td><a href="javascript:pageChange()" class="l-btn l-btn-plain" id=""><span class="l-btn-left"><span
-                    class="l-btn-text"><span class="l-btn-empty pagination-load">&nbsp;</span></span></span></a></td>--%>
+
         </tr>
         </tbody>
     </table>
@@ -125,17 +120,18 @@
             height:200,
             close:false,
             cache:false,
-            href:'/agent/preUpLevel?agentId='+agentId,
+            href:'/agent/preUpLevel?agentId='+agentId +'&url=/admin/list'+'&pageSize='+$('#pageSize').val()+'&pageNum='+$('#pageNum').val(),
             modal:true
         });
-    } function preAgentRecharge(agentId) {
+    }
+    function preAgentRecharge(agentId) {
         $("#chargeDlg").dialog({
             title:"recharge",
             width:400,
             height:200,
             close:false,
             cache:false,
-            href:'/agent/preRecharge?agentId='+agentId,
+            href:'/agent/preRecharge?agentId='+agentId +'&url=/admin/list'+'&pageSize='+$('#pageSize').val()+'&pageNum='+$('#pageNum').val(),
             modal:true
         });
 

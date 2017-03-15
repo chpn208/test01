@@ -20,16 +20,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static com.sun.xml.internal.ws.api.message.Packet.Status.Request;
-import static org.apache.shiro.web.filter.mgt.DefaultFilter.user;
 
 /**
  * Created by chenpan on 17-1-4.
@@ -75,8 +71,11 @@ public class AgentRechargeController {
     }
 
     @RequestMapping("/preRecharge")
-    public String preAgentRecharge(HttpServletRequest request,Model model,
-                                   @RequestParam(value = "agentId",required = true) Integer agentId){
+    public String preAgentRecharge(HttpServletRequest request, Model model,
+                                   @RequestParam(value = "agentId") Integer agentId,
+                                   @RequestParam(value = "url") String url,
+                                   @RequestParam(value = "pageSize") String pageSize,
+                                   @RequestParam(value = "pageNum") String pageNum){
         try {
 
             Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
@@ -101,7 +100,9 @@ public class AgentRechargeController {
                 }
             }
 
+            String callbackUrl = url+"?pageSize="+pageSize+"&pageNum="+pageNum;
             RechargeSend rechargeSend = Constant.getInstance().getRechargeSendMap().get(user.getLevel());
+            model.addAttribute("url",callbackUrl);
             model.addAttribute("chargeNum", rechargeSend.getRechargeNum());
             model.addAttribute("sendNum", rechargeSend.getReturnNum());
             model.addAttribute("countDiamond", user.getDiamond());
@@ -117,7 +118,10 @@ public class AgentRechargeController {
 
     @RequestMapping("/preUpLevel")
     public String preUpdateLevel(HttpServletRequest request,Model model,
-                                 @RequestParam(value ="agentId",required = true) int agentId){
+                                 @RequestParam(value ="agentId") int agentId,
+                                 @RequestParam(value = "url")String url,
+                                 @RequestParam(value = "pageSize")String pageSize,
+                                 @RequestParam(value = "pageNum")String pageNum){
         Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
         User user = userService.findById(userId);
         User targetUser = userService.findById(agentId);
@@ -125,11 +129,13 @@ public class AgentRechargeController {
             model.addAttribute(Constant.getInstance().error_msg,"目标代理商不存在");
             return "/error404";
         }
+        String callbackUrl = url+"?pageSize="+pageSize+"&pageNum="+pageNum;
         Map<Integer, Permissions> permissionMap = Constant.getInstance().getPermissionsMap();
         Permissions permissions = permissionMap.get(user.getLevel());
         model.addAttribute("agentId",targetUser.getId());
         model.addAttribute("agentName",targetUser.getName());
         model.addAttribute("agentLevel",targetUser.getLevel());
+        model.addAttribute("url",callbackUrl);
         Collection<Permissions> permissionsList = Constant.getInstance().getPermissionsMap().values();
         List<Permissions> myPermissionsList = permissionsList.stream().filter((e) ->
                 (e.getLevel() < permissions.getLevel())).collect(Collectors.toList());

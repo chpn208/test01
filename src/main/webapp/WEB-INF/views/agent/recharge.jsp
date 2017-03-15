@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<input id="forwardUrl" type="hidden" value="${url}">
 <div>
    我的剩余钻石:
     <span>${countDiamond}</span>
@@ -50,7 +51,6 @@
 </div>
 <script type="text/javascript">
     function recharge() {
-        debugger
         var agentId= $('#agentId').val();
         var rechargeNum= $('#rechargeNum').val();
         var obj = new Object();
@@ -63,6 +63,11 @@
             success:function (data) {
                 if (data.code == 200){
                     alert("充值成功")
+                    $("#chargeDlg").dialog('close')
+                    var forwardUrl = $('#forwardUrl').val();
+                    if (forwardUrl) {
+                        window.location.href = forwardUrl;
+                    }
                 }else {
                     alert("充值失败:"+data.msg);
                 }

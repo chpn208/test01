@@ -61,12 +61,12 @@ public class UserService {
 
     public List<User> getByPage(User user,int pageSize,int pageNum){
         int startNum = pageNum * pageSize;
-        int endNum = (pageNum+1) * pageSize;
+//        int endNum = (pageNum+1) * pageSize;
         Map<String,Integer> parameterMap = Maps.newHashMap();
         parameterMap.put("id",user.getId());
         parameterMap.put("userlevel",user.getLevel());
         parameterMap.put("startNum",startNum);
-        parameterMap.put("endNum",endNum);
+        parameterMap.put("endNum",pageSize);
         List<User> users = dao.getPageMembers(parameterMap);
         return users;
     }
@@ -100,8 +100,8 @@ public class UserService {
                     diamondCount = grandParent.getDiamond() + returnValue;
                     grandParent.setDiamond(diamondCount);
 
-                    grandParent = findById(grandParent.getParentUser());
                     updateUser(grandParent);
+                    grandParent = findById(grandParent.getParentUser());
                 }
             }
         } catch (Exception e) {

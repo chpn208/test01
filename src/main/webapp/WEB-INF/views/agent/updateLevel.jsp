@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div>
+    <input id="url" type="hidden" value="${url}"/>
     <form>
         <table>
             <tbody>
@@ -42,7 +43,6 @@
 </div>
 <script type="text/javascript">
     function updateAgentLevel() {
-        debugger
         var agentId = $("#agentId").val();
         var level = $("#agentLevel").val();
         var obj = new Object();
@@ -55,6 +55,10 @@
             success:function (data) {
                 if (data.code == 200){
                     alert("修改成功");
+                    $("#chargeDlg").dialog('close')
+                    var forwardUrl = $('#url').val()
+                    window.location.href=forwardUrl;
+
                 }else {
                     alert(data.msg);
                 }
