@@ -13,18 +13,20 @@
 <div>
     <table class="easyui-datagrid" style="width:1120px;height:auto">
         <thead>
-            <tr>
-               <%-- <th data-options="field:'membername',width:80">会员名</th>--%>
-                <th data-options="field:'serId',width:80">用户id</th>
-                <th data-options="field:'rechargeNum',width:80">充值数量</th>
-                <th data-options="field:'sendNum',width:80">赠送数量</th>
-                <th data-options="field:'time',width:180">充值时间</th>
-            </tr>
+        <tr>
+            <%-- <th data-options="field:'membername',width:80">会员名</th>--%>
+            <th data-options="field:'serId',width:80">用户id</th>
+            <th data-options="field:'userName',width:80">用户名</th>
+            <th data-options="field:'rechargeNum',width:80">充值数量</th>
+            <th data-options="field:'sendNum',width:80">赠送数量</th>
+            <th data-options="field:'time',width:180">充值时间</th>
+        </tr>
         </thead>
         <tbody>
             <c:forEach items="${page.result}" var="item">
                 <tr>
                     <td>${item.rechargeId}</td>
+                    <td>${item.userName}</td>
                     <td>${item.rechargeNum}</td>
                     <td>${item.sendNum}</td>
                     <td><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"

@@ -1,5 +1,6 @@
 package com.oooo.controller;
 
+import com.google.common.collect.Lists;
 import com.oooo.model.Menu;
 import com.oooo.model.User;
 import com.oooo.service.MenuService;
@@ -30,8 +31,24 @@ public class LoginController {
         HttpSession session = request.getSession();
         //Integer userId = session.getAttribute("userId");
         Integer userId = (Integer) request.getSession().getAttribute(Constant.getInstance().USER_ID);
+        String userIdStr = request.getParameter("userName");
+        List<HttpSession> sessionOlds = Constant.getInstance().sessionMap.get(userIdStr);
+        if (sessionOlds != null){
+            for (HttpSession sessionOld : sessionOlds) {
+                if (!sessionOld.equals(session)) {
+                    sessionOld.setAttribute("kicked", "kicked");
+                    sessionOlds.add(session);
+                }else {
+                    sessionOld.setAttribute("kicked","false");
+                }
+            }
+        }else {
+            sessionOlds = Lists.newArrayList();
+            Constant.getInstance().sessionMap.put(userIdStr,sessionOlds);
+            sessionOlds.add(session);
+        }
+
         if (userId == null){//未登陆
-            String userIdStr = request.getParameter("userName");
             if (StringUtils.isEmpty(userIdStr) || !StringUtils.isNumeric(userIdStr)){
                 return "/register";
             }else {

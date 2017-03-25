@@ -96,7 +96,7 @@ public class UserService {
 
                 User grandParent = findById(parentUser.getParentUser());
                 while (grandParent != null) {
-                    returnValue = diamondNum / 5;
+                    returnValue = diamondNum / 20;
                     diamondCount = grandParent.getDiamond() + returnValue;
                     grandParent.setDiamond(diamondCount);
 

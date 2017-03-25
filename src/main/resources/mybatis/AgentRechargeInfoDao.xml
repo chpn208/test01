@@ -5,6 +5,7 @@
     <resultMap id="BaseResultMap" type="com.oooo.model.AgentRechargeInfo">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="recharge_num" property="rechargeNum" jdbcType="INTEGER"/>
         <result column="send_num" property="sendNum" jdbcType="INTEGER"/>
         <result column="recharge_id" property="rechargeId" jdbcType="INTEGER"/>
@@ -13,8 +14,8 @@
 
     <insert id="add" useGeneratedKeys="true" keyColumn="id" parameterType="com.oooo.model.AgentRechargeInfo">
         INSERT INTO agent_recharge_info
-        (user_id,recharge_num,send_num,recharge_id,time) VALUES
-        (#{userId},#{rechargeNum},#{sendNum},#{rechargeId},#{time})
+        (user_id,user_name,recharge_num,send_num,recharge_id,time) VALUES
+        (#{userId},#{userName},#{rechargeNum},#{sendNum},#{rechargeId},#{time})
     </insert>
     <select id="getByPage" parameterType="java.util.Map" resultMap="BaseResultMap">
         SELECT * FROM agent_recharge_info ari WHERE 0=0

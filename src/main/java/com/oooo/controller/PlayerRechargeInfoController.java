@@ -20,7 +20,9 @@ import com.oooo.service.PlayerRechargeInfoService;
 import com.oooo.service.UserService;
 import com.oooo.util.Constant;
 import com.oooo.util.Page;
+import com.sun.org.glassfish.gmbal.ParameterNames;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.session.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +50,10 @@ public class PlayerRechargeInfoController {
     UserService userService;
 
     @RequestMapping("/playerInfo")
-    public String getPlayerInfo(HttpServletRequest request,Model model) {
+    public String getPlayerInfo(HttpServletRequest request, Model model,
+                                @RequestParam(value = "pageNum", defaultValue="0") int pageNum,
+                                @RequestParam(value = "pageSize",defaultValue="10")int pageSize
+                                ) {
         String playerIdStr = request.getParameter("playerId");
         if (StringUtils.isNumeric(playerIdStr)) {
             Integer playerId = Integer.parseInt(playerIdStr);
@@ -70,6 +75,28 @@ public class PlayerRechargeInfoController {
             jsonObject.put("playerId", player.getAccountId());
             jsonObject.put("status", "正常");
             model.addAttribute("player", jsonObject);
+            HttpSession session = request.getSession();
+            Integer userId = (Integer) session.getAttribute(Constant.getInstance().USER_ID);
+            User user = userService.findById(userId);
+
+            Map<String, Integer> parameterMap = Maps.newHashMap();
+            int startNum = pageNum * pageSize;
+            int endNum = (pageNum + 1) * pageSize;
+            parameterMap.put("playerId", playerId);
+            if (user.getLevel() < 99) {
+                parameterMap.put("userId",userId);
+            }
+            //parameterMap.put("startNum",startNum);
+            //parameterMap.put("endNum",endNum);
+            List<PlayerRechargeInfo> result = playerRechargeInfoService.getByPage(parameterMap);
+            int count = playerRechargeInfoService.getCount(parameterMap);
+            Page<PlayerRechargeInfo> page = new Page<>();
+            page.setResult(result);
+            page.setPageNum(pageNum);
+            page.setPageSize(pageSize);
+            page.setCount(count);
+
+            model.addAttribute("page", page);
         }
         return "/player/playerInfo";
     }
@@ -166,6 +193,7 @@ public class PlayerRechargeInfoController {
         int gateServerId = 0;
         try {
             Player player = remoteService.getPlayerByAccountId(playerId);
+            playerRechargeInfo.setPlayerName(player.getRoleName());
             gateServerId = player.getGateServerId();
             if (player == null){
                 model.addAttribute(Constant.getInstance().error_msg,"玩家不存在,请检查玩家ID");
@@ -205,6 +233,7 @@ public class PlayerRechargeInfoController {
         }
         user.setDiamond(surplusDiamond);
         userService.updateUser(user);
+        playerRechargeInfo.setAgentName(user.getName());
         playerRechargeInfoService.add(playerRechargeInfo);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("playerId", playerId);

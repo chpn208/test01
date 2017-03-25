@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="ctx" value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}" />
 <link rel="stylesheet" type="text/css" href="../../../easyui/themes/default/easyui.css"/>
 <link rel="stylesheet" type="text/css" href="../../../easyui/themes/icon.css"/>
@@ -15,14 +16,22 @@
     </div>
     <div style="height:30px;" class="datagrid-toolbar">
             <span style="float:right">
+                <c:if test="${player.playerId != null}">
+                <a href="#" class="easyui-linkbutton l-btn"onclick="openCharge()">
+                    <span class="l-btn-text icon-search l-btn-icon-left">
+                        充值
+                    </span>
+                </a>
+                </c:if>
                 <a href="#" class="easyui-linkbutton l-btn"onclick="playerListsearch()">
                     <span class="l-btn-text icon-search l-btn-icon-left">
                         查询
                     </span>
                 </a>
+
             </span>
     </div>
-    <table class="easyui-datagrid"style="width:1120px;height:auto">
+    <%--<table class="easyui-datagrid"style="width:1120px;height:auto">
         <thead>
         <tr>
             <th data-options="field:'playerName',width:80">玩家id</th>
@@ -48,6 +57,39 @@
                 </c:if>
             </tr>
         </tbody>
+    </table>--%>
+
+    <table class="easyui-datagrid"style="">
+        <thead>
+            <tr>
+                <th data-options="field:''"></th>
+                <th data-options="field:'playerId'" >玩家id</td>
+                <th data-options="field:'playerName'">玩家名</th>
+                <th data-options="field:'agentId'">代理id</td>
+                <th data-options="field:'agentName'">代理商名</th>
+                <th data-options="field:'rechargeNum'" >充值数量</td>
+                <th data-options="field:'sendNum'" >赠送数量</td>
+                <th data-options="field:'time'">充值时间</td>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${page.result}" var="item">
+                <tr>
+                    <td></td>
+                    <td>${item.playerId}</td>
+                    <td>${item.playerName}</td>
+                    <td>${item.agentId}</td>
+                    <td>${item.agentName}</td>
+                    <td>${item.rechargeNum}</td>
+                    <td>${item.sendNum}</td>
+                    <td>
+                        <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
+                                        value="${item.rechargeTime}" />
+                    </td>
+                </tr>
+            </c:forEach>
+        </tbody>
+
     </table>
     <div id="dlg"></div>
 </div>

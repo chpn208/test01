@@ -274,9 +274,9 @@ public class AgentRechargeController {
                     respMsg.setMsg("你的钻石不足");
                     return respMsg;
                 }
-                //int diamond = user.getDiamond() - rechargedNum;
-                //user.setDiamond(diamond);
-                //userService.updateUser(user);
+                int diamond = user.getDiamond() - rechargedNum;
+                user.setDiamond(diamond);
+                userService.updateUser(user);
             }
 
 //            int countDiamond = toUser.getDiamond()+rechargedNum + sendCount;
@@ -288,6 +288,7 @@ public class AgentRechargeController {
             agentRechargeInfo.setSendNum(sendCount);
             agentRechargeInfo.setRechargeId(toUserId);
             agentRechargeInfo.setUserId(userId);
+            agentRechargeInfo.setUserName(toUser.getName());
             agentRechargeInfo.setTime(new Date());
             agentService.add(agentRechargeInfo);
         }

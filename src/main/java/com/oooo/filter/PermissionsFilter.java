@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +46,14 @@ public class PermissionsFilter implements Filter {
                     response.sendRedirect("/");
                     return;
                 }
+
+                Object kicked = session.getAttribute("kicked");
+                if (kicked != null && kicked.equals("kicked")) {
+                    response.setCharacterEncoding("utf-8");
+                    response.getWriter().write("你的帐号已经在别的地方登陆");
+                    return;
+                }
+
                 SerialUtil serialUtil = Constant.getInstance().getSerialUtil();
                 List<Map<String, Object>> result = serialUtil.getBySQL("select * from user u where u.id =" + userId);
 

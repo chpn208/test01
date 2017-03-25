@@ -8,6 +8,7 @@ import java.util.Date;
 public class AgentRechargeInfo {
     private int id;
     private int userId;//me
+    private String userName;
     private int rechargeNum;
     private int sendNum;
     private int rechargeId;//other
@@ -27,6 +28,14 @@ public class AgentRechargeInfo {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getRechargeNum() {

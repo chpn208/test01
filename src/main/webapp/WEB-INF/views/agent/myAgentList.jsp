@@ -16,6 +16,7 @@
         <thead>
         <tr>
             <th data-options="field:'serId',width:80">代理id</th>
+            <th data-options="field:'userName',width:80">代理商名</th>
             <th data-options="field:'rechargeNum',width:80">代理等级</th>
             <th data-options="field:'sendNum',width:80">下级代理数</th>
             <th data-options="field:'operation',width:80">下级代理数</th>
@@ -26,6 +27,7 @@
         <c:forEach items="${page.result}" var="item">
             <tr>
                 <td>${item.id}</td>
+                <td>${item.name}</td>
                 <%--<td>${item.level}</td>--%>
                 <td>
                     ${fn:permissionName(item.level)}

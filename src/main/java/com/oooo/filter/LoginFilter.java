@@ -49,6 +49,10 @@ public class LoginFilter implements Filter {
         }
 
         HttpSession session = httpRequest.getSession();
+        Object kicked = session.getAttribute("kicked");
+        if (kicked != null && kicked.equals("kicked")){
+            response.getWriter().write("你的帐号已经在别的地方登陆");
+        }
         if (session.getAttribute("username") != null) {
             chain.doFilter(request, response);
         } else {

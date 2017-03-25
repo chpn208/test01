@@ -8,7 +8,9 @@ import java.util.Date;
 public class PlayerRechargeInfo {
     private int id;
     private int playerId;
+    private String playerName;
     private int agentId;
+    private String agentName;
     private int rechargeNum;
     private int sendNum;
     private Date rechargeTime;
@@ -29,12 +31,28 @@ public class PlayerRechargeInfo {
         this.playerId = playerId;
     }
 
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
     public int getAgentId() {
         return agentId;
     }
 
     public void setAgentId(int agentId) {
         this.agentId = agentId;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
     }
 
     public int getRechargeNum() {

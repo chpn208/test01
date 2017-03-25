@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <link rel="stylesheet" type="text/css" href="../../../easyui/themes/default/easyui.css"/>
 <link rel="stylesheet" type="text/css" href="../../../easyui/themes/icon.css"/>
@@ -13,7 +14,9 @@
             <tr>
                 <th data-options="field:''"></th>
                 <th data-options="field:'playerId'" >玩家id</td>
+                <th data-options="field:'playerName'">玩家名</th>
                 <th data-options="field:'agentId'">代理id</td>
+                <th data-options="field:'agentName'">代理商名</th>
                 <th data-options="field:'rechargeNum'" >充值数量</td>
                 <th data-options="field:'sendNum'" >赠送数量</td>
                 <th data-options="field:'time'">充值时间</td>
@@ -24,10 +27,15 @@
                 <tr>
                     <td></td>
                     <td>${item.playerId}</td>
+                    <td>${item.playerName}</td>
                     <td>${item.agentId}</td>
+                    <td>${item.agentName}</td>
                     <td>${item.rechargeNum}</td>
                     <td>${item.sendNum}</td>
-                    <td>${item.rechargeTime}</td>
+                    <td>
+                        <fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss"
+                                        value="${item.rechargeTime}" />
+                    </td>
                 </tr>
             </c:forEach>
         </tbody>

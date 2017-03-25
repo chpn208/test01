@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by chenpan on 16-12-31.
@@ -28,6 +31,7 @@ public class Constant {
     public final String lobby_server = "127.0.0.1";
     public final String error_msg = "errorMsg";
 
+    public final Map<String,List<HttpSession>> sessionMap = new ConcurrentHashMap<>();
     private Constant(){
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         serialUtil = (SerialUtil) applicationContext.getBean("serialUtil");
