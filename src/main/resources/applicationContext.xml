@@ -22,6 +22,7 @@
 
     <mvc:annotation-driven/>
 
+
    <bean id="testAopService" class="com.oooo.service.TestAopService">
         <property name="id" value="1"/>
     </bean>

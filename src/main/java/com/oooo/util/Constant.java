@@ -1,7 +1,8 @@
 package com.oooo.util;
 
-import com.google.common.collect.Lists;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.mahjong.util.JsonUtil;
 import com.oooo.model.Notice;
 import com.oooo.model.Permissions;
 import com.oooo.model.RechargeSend;
@@ -11,9 +12,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -30,11 +34,18 @@ public class Constant {
     public final String USER_ID="userName";
     public final String lobby_server = "127.0.0.1";
     public final String error_msg = "errorMsg";
+    public final Properties properties;
 
     public final Map<String,List<HttpSession>> sessionMap = new ConcurrentHashMap<>();
     private Constant(){
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
         serialUtil = (SerialUtil) applicationContext.getBean("serialUtil");
+        properties = new Properties();
+        try {
+            properties.load(new FileInputStream(new File(this.getClass().getResource("/").getFile()+"application.properties")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     private Map<Integer,RechargeSend> rechargeSendMap = Maps.newHashMap();
     private Map<String,Permissions> permissionsUrlMap = Maps.newHashMap();
@@ -126,6 +137,7 @@ public class Constant {
             notice.setType(type);
             notice.setName(name);
             notice.setContent(content);
+            System.out.println(JSONObject.toJSONString(notice));
 
             noticeMap.put(notice.getType(),notice);
         }

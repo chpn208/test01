@@ -86,6 +86,7 @@ public class UserService {
             int parentUserId = user.getParentUser();
             int diamondCount = user.getDiamond() + diamondNum + sendCount;
             user.setDiamond(diamondCount);
+
             updateUser(user);
             User parentUser = findById(parentUserId);
             if (parentUser != null) {

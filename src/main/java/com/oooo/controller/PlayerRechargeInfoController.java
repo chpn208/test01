@@ -57,7 +57,9 @@ public class PlayerRechargeInfoController {
         String playerIdStr = request.getParameter("playerId");
         if (StringUtils.isNumeric(playerIdStr)) {
             Integer playerId = Integer.parseInt(playerIdStr);
-            IRemoteService remoteService = HessianUtil.getLobbyRemoteService(Constant.getInstance().lobby_server);
+            String lobbyServer = Constant.getInstance().properties.getProperty("lobby.server");
+            String lobbyPort = Constant.getInstance().properties.getProperty("lobby.port");
+            IRemoteService remoteService = HessianUtil.getLobbyRemoteService(lobbyServer,Integer.parseInt(lobbyPort));
             Player player = null;
             try {
                 player = remoteService.getPlayerByAccountId(playerId);
@@ -71,6 +73,7 @@ public class PlayerRechargeInfoController {
                 model.addAttribute(Constant.getInstance().error_msg, "玩家ID不存在");
                 return "/error404";
             }
+            System.out.println();
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("playerId", player.getAccountId());
             jsonObject.put("status", "正常");
@@ -133,7 +136,9 @@ public class PlayerRechargeInfoController {
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute(Constant.getInstance().USER_ID);
         User user = userService.findById(userId);
-        IRemoteService remoteService = HessianUtil.getLobbyRemoteService(Constant.getInstance().lobby_server);
+        String lobbyServer = Constant.getInstance().properties.getProperty("lobby.server");
+        String lobbyPort = Constant.getInstance().properties.getProperty("lobby.port");
+        IRemoteService remoteService = HessianUtil.getLobbyRemoteService(lobbyServer,Integer.parseInt(lobbyPort));
         Player player = null;
         try {
             player = remoteService.getPlayerByAccountId(playerId);
@@ -189,7 +194,9 @@ public class PlayerRechargeInfoController {
         playerRechargeInfo.setRechargeNum(rechargeNum);
         playerRechargeInfo.setAgentId(user.getId());
         playerRechargeInfo.setRechargeTime(new Date());
-        IRemoteService remoteService = HessianUtil.getLobbyRemoteService(Constant.getInstance().lobby_server);
+        String lobbyServer = Constant.getInstance().properties.getProperty("lobby.server");
+        String lobbyPort = Constant.getInstance().properties.getProperty("lobby.port");
+        IRemoteService remoteService = HessianUtil.getLobbyRemoteService(lobbyServer, Integer.parseInt(lobbyPort));
         int gateServerId = 0;
         try {
             Player player = remoteService.getPlayerByAccountId(playerId);

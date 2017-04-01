@@ -15,6 +15,8 @@
 <link rel="stylesheet" href="${ctx}/css/tableform.css"/>
 <link rel="stylesheet" href="${ctx}/css/layout.css"/>
     <form id="formobj" action="/agentAdd.do" name="formobj" method="post">
+
+        <input type="hidden" id="token" name="token" value="${token}" />
         <input type="hidden" id="id" name="id" value="${id}"/>
         <input type="hidden" id="upAgent" name="upAgent" value="${upAgent}">
         <table style="width: 600px;" cellpadding="0" cellspacing="1" class="formtable" align="center">
@@ -277,7 +279,7 @@
                     alert("你的帐号是"+obj.result);
                     window.location.href = "/home/login?userName="+obj.msg;
                 }else {
-                    alert(obj.info);
+                    alert(obj.msg);
                 }
             }
         })

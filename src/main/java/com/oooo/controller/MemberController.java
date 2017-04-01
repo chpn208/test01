@@ -147,7 +147,10 @@ public class MemberController {
 
         notice.setContent(noticeContent);
         //IRemoteService service = HessianUtil.getLobbyRemoteService("127.0.0.1");
-        IRemoteService remoteService = HessianUtil.getLobbyRemoteService(Constant.getInstance().lobby_server);
+        String lobbyServer = Constant.getInstance().properties.getProperty("lobby.server");
+        String lobbyPort = Constant.getInstance().properties.getProperty("lobby.port");
+
+        IRemoteService remoteService = HessianUtil.getLobbyRemoteService(lobbyServer, Integer.parseInt(lobbyPort));
         Collection<GateServer> gateServerList = remoteService.getGateServerList();
         for (GateServer gateServer : gateServerList) {
             try {
@@ -163,9 +166,11 @@ public class MemberController {
                 msgInfo.setMessage(JSON.toJSONString(notice));
                 NoticeRpcService noticeRpcService = pbrpcProxy.proxy();
                 MsgInfo respRpcMsg = noticeRpcService.notice(msgInfo);
+                System.out.printf("notice update respRpcMsg  resp:{},message {}",respRpcMsg.getResp(),respRpcMsg.getMessage() );
                 String resp = respRpcMsg.getResp();
                 if (!StringUtils.equals(resp, "success")) {
-                    logger.error("notice update error.......ip{},port{}", gateServer.getRpcIp(), gateServer.getRpcPort());
+                    logger.error("notice update error......x`.ip{},port{}", gateServer.getRpcIp(), gateServer.getRpcPort());
+                    System.out.printf("notice update error......x`.ip{},port{}", gateServer.getRpcIp(), gateServer.getRpcPort());
                 }
             }catch (Exception e){
                 logger.error("notice update error "+ e);
@@ -188,7 +193,9 @@ public class MemberController {
     @ResponseBody
     public RespMsg<String> update(HttpServletRequest request,
                                   @RequestParam(value = "broadCasts",required = true) List<BroadCast> broadCasts){
-        IRemoteService remoteService = HessianUtil.getLobbyRemoteService(Constant.getInstance().lobby_server);
+        String lobbyServer = Constant.getInstance().properties.getProperty("lobby.server");
+        String lobbyPort = Constant.getInstance().properties.getProperty("lobby.port");
+        IRemoteService remoteService = HessianUtil.getLobbyRemoteService(lobbyServer,Integer.parseInt(lobbyPort));
         Collection<GateServer> gateServiceList = remoteService.getGateServerList();
         RespMsg<String> msg = new RespMsg<>();
         for (GateServer gateServer : gateServiceList) {
